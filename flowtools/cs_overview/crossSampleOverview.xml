@@ -1,0 +1,115 @@
+<tool id="cross_sample_overview" name="Generate overview information" version="1.0">
+  <description>of the CrossSample analysis</description>
+  <requirements>
+    <requirement type="package" version="2.8">jinja2</requirement>
+  </requirements>
+  <stdio>
+       <exit_code range="1:" />
+  </stdio>
+  <command><![CDATA[
+    python $__tool_directory__/crossSampleOverview.py -i "${input}" -I "${inputmfi}" -s "${mfistats}" -o "${html_file}" -d "${html_file.files_path}" -t $__tool_directory__
+  ]]>
+  </command>
+  <inputs>
+    <param format="flowstat1" name="input" type="data" label="CrossSample Population Summary Table"/>
+    <param format="flowstat2" name="inputmfi" type="data" label="Centroids MFI Summary Table"/>
+    <param format="flowstat3" name="mfistats" type="data" label="MFI Descriptive Statistics"/>
+  </inputs>
+  <outputs>
+    <data format="html" name="html_file" label="Overview of ${input.name}">
+    </data>
+  </outputs>
+  <tests>
+    <test>
+      <param name="input" value="input.flowstat1"/>
+      <param name="inputmfi" value="input.flowstat2"/>
+      <param name="mfistats" value="input.flowstat3"/>
+      <output name="output_file" file="out.html">
+        <extra_files type="file" name="csAllMFIs.tsv" value="csAllMFIs.tsv"/>
+        <extra_files type="file" name="csOverview.tsv" value="csOverview.tsv"/>
+      </output>
+    </test>
+  </tests>
+ <help><![CDATA[
+   This tool generates an overview of the flow analysis results.
+   
+-----
+
+**Input**
+
+This tool reads in summary tables from a CrossSample run (tab-separated file containing the counts of events in each population in each file that was run through CrossSample and tab-separated file containing the MFI for each marker in each population in each file.)
+
+**Output**
+
+The output is a page that allows visualization of the data. 
+
+-----
+
+**Example**
+
+*Input*
+
+Population distribution table::
+
+   Filename SampleName Pop1 Pop2 Pop3 ...
+   File1    Biosample1 255  147  18   ...
+   File2    Biosample2 27   61   965  ...
+   File3    Biosample3 201  546  221  ...
+   File4    Biosample4 11   77   327  ...
+
+Centroids MFI Summary table::
+
+   Marker1 Marker2 Marker3 ... Population Percentage SampleName
+   154     885     24      ... 1          0.2        Biosample1
+   458     74      574     ... 2          0.3        Biosample1
+   3       210     86      ... 3          0.05       Biosample1
+   140     921     19      ... 1          0.1        Biosample2
+   428     79      508     ... 2          0.25       Biosample2
+   9       225     90      ... 3          0.3        Biosample2
+   
+MFI Descriptive Stats table::
+
+   Population Marker1_mean Marker1_median Marker1_stdev ... Percentage_mean Percentage_median Percentage_stdev
+   1          94.65        90.86          25.8          ... 1.84            0.55              2.48
+   2          132.18       131.58         5.02          ... 9.89            9.76              0.33
+   3          71.8         69.68          10.53         ... 3.02            1.49              3.45
+   4          84.85        84.85          nan           ... 8.52            8.52              nan
+   5          161.82       132.77         61.29         ... 0.95            0.37              1.06
+
+*Output*
+
+Summary of the population distribution.
+
+The comment field of this table is editable, as well as the population names. The edited values are used to populate the legends of the other graphs. The columns are re-orderable. The 'col visibility' button allows to choose which columns to display. 'CSV', 'PDF' and 'Copy' respectively allow to download a comma-separated values file, a pdf version or to copy to your clipboard in a tab-separated format the current view of the table.
+
+.. image:: ../../static/images/flowtools/popdistrib.png
+
+.. image:: ../../static/images/flowtools/edit_popdistrib.png
+
+Stacked area plot of the population distribution in each sample.
+
+The user can choose which populations to display. The graph displays the proportion of each population within the set of selected populations. The Plotly toolbar allows more control over the display of the graph. There is an option to save the plot as a png file.
+
+.. image:: ../../static/images/flowtools/stackedA.png
+
+Stacked bar plot of the population distribution in each sample. 
+
+The user can choose which populations to display. The graph displays the proportion of each population within the set of selected populations. The Plotly toolbar allows more control over the display of the graph. There is an option to save the plot as a png file.
+
+.. image:: ../../static/images/flowtools/stackedB.png
+
+Parallel coordinates representation of populations. 
+
+The user can reorder the populations, and choose which samples to display either by selecting them in the legend via checkboxes or by selecting them on the graph. Data selected for display is shown in the table below the graph. Mousing over a line in that table highlights the corresponding line on the graph. The 'col visibility' button allows to choose which columns to display. 'CSV', 'PDF' and 'Copy' respectively allow to download a comma-separated values file, a pdf version or to copy to your clipboard in a tab-separated format the current view of the table.
+
+.. image:: ../../static/images/flowtools/pcpop.png
+
+Parallel coordinates representation of the data. 
+
+The user can reorder the markers, and choose which samples and/or populations to display either by selecting them in the legends via checkboxes or by selecting them on the graph. Data selected for display is shown in the table below the graph. Mousing over a line in that table highlights the corresponding line on the graph. The 'col visibility' button allows to choose which columns to display. 'CSV', 'PDF' and 'Copy' respectively allow to download a comma-separated values file, a pdf version or to copy to your clipboard in a tab-separated format the current view of the table.
+
+.. image:: ../../static/images/flowtools/pcmfi.png
+ ]]>
+ </help>
+</tool>
+
