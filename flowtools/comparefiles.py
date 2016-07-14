@@ -13,6 +13,21 @@ def compare_file(file_un, file_dx):
         print("yay")
     else:
         print("ohno")
+    return
+        
+def compare_text(file1, file2):
+    with open(file1, "r") as un, open(file2, "r") as dx:
+        i = 0
+        for line in un:
+            ln = dx.readline()
+            if not line == ln:
+                print ("ohno")
+                i += 1
+                if i==10:
+                    sys.exit(2)
+        if i == 0:
+            print ("yay")
+    return
 
 if __name__ == "__main__":
     parser = ArgumentParser(
@@ -31,7 +46,15 @@ if __name__ == "__main__":
             required=True,
             help="File location for the second file.")
 
+    parser.add_argument(
+            '-t',
+            dest="as_text",
+            help="compare files as text files")
+
     args = parser.parse_args()
     
-    compare_file(args.input1, args.input2)
+    if args.as_text:
+        compare_text(args.input1, args.input2)
+    else:
+        compare_file(args.input1, args.input2)
     sys.exit(0)

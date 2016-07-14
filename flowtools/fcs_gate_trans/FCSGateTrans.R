@@ -375,7 +375,7 @@ processFCSFile <- function(input_file, output_file="", compensate=FALSE,
       cat("==    BEFORE GATING    ==\n")
       cat("=========================\n")
       cat(pregating_dim, pregating_summary, sep="\n")
-      cat("\n=========================n")
+      cat("\n=========================\n")
       cat("==    AFTER  GATING    ==\n")
       cat("=========================\n")
       cat(postgating_dim, postgating_summary, sep="\n")

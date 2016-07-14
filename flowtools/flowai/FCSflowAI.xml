@@ -62,9 +62,9 @@
       <param name="lowQ_FCS" value="TRUE"/>
       <param name="QC_FCS" value="TRUE"/>
       <output name="full_rep" file="QCreport.html"/>
-      <output name="highfcs" file="hqdata.fcs"/>
-      <output name="lowfcs" file="lqdata.fcs"/>
-      <output name="qcfcs" file="alldata.fcs"/>
+      <output name="highfcs" file="hqdata.fcs" compare="sim_size"/>
+      <output name="lowfcs" file="lqdata.fcs" compare="sim_size"/>
+      <output name="qcfcs" file="alldata.fcs" compare="sim_size"/>
     </test>
     <test>
       <param name="input" value="input.fcs"/>
@@ -78,7 +78,7 @@
       <param name="lowQ_FCS" value="FALSE"/>
       <param name="QC_FCS" value="FALSE"/>
       <output name="full_rep" file="std/QCreport.html"/>
-      <output name="highfcs" file="std/hqdata.fcs"/>
+      <output name="highfcs" file="std/hqdata.fcs" compare="sim_size"/>
     </test>
     <test>
       <param name="input" value="input.fcs"/>
@@ -92,9 +92,9 @@
       <param name="lowQ_FCS" value="TRUE"/>
       <param name="QC_FCS" value="TRUE"/>
       <output name="full_rep" file="std/QCreport.html"/>
-      <output name="highfcs" file="std/hqdata.fcs"/>
-      <output name="lowfcs" file="std/lqdata.fcs"/>
-      <output name="qcfcs" file="std/alldata.fcs"/>
+      <output name="highfcs" file="std/hqdata.fcs" compare="sim_size"/>
+      <output name="lowfcs" file="std/lqdata.fcs" compare="sim_size"/>
+      <output name="qcfcs" file="std/alldata.fcs" compare="sim_size"/>
     </test>
     <test>
       <param name="input" value="input.fcs"/>
@@ -108,7 +108,7 @@
       <param name="lowQ_FCS" value="TRUE"/>
       <param name="QC_FCS" value="TRUE"/>
       <output name="full_rep" file="nooutliers/QCreport_nooutliers.html"/>
-      <output name="highfcs" file="nooutliers/hqdata_nooutliers.fcs"/>
+      <output name="highfcs" file="nooutliers/hqdata_nooutliers.fcs" compare="sim_size"/>
     </test>
     <test>
       <param name="input" value="input.fcs"/>
@@ -122,7 +122,7 @@
       <param name="lowQ_FCS" value="TRUE"/>
       <param name="QC_FCS" value="TRUE"/>
       <output name="full_rep" file="withsfsc/QCreport_sfsc.html"/>
-      <output name="highfcs" file="withsfsc/hqdata_sfsc.fcs"/>
+      <output name="highfcs" file="withsfsc/hqdata_sfsc.fcs" compare="sim_size"/>
     </test>
   </tests>
   <help><![CDATA[
@@ -190,7 +190,7 @@ Signal acquisition check. The stable region has a yellow background. The algorit
 
 Dynamic range check. The red and blue line indicates the number of events detected over time. The x-axis corresponds to the one of the signal acquisition plot.
 
-.. image:: static/images/margins.png
+.. image:: static/images/"a"margins.png
 
  ]]>
  </help>

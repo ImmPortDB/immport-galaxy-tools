@@ -24,7 +24,7 @@
     <test>
       <param name="input" value="testfcs1.fcs"/>
       <param name="channels" value="1,3"/>
-      <output name="output" file="graph.pdf"/>
+      <output name="output" file="graph.pdf" compare="sim_size"/>
     </test>
   </tests>
  <help><![CDATA[

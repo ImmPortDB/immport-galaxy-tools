@@ -14,7 +14,7 @@ getMarkerNames <- function(input, output) {
 
   sink(output)
   cat(fcs_dim, sep="\n")
-  cat("\n\n=========================n")
+  cat("\n\n=========================\n")
   cat("==     FCS SUMMARY     ==\n")
   cat("=========================\n")
   cat(fcs_summary, sep="\n")

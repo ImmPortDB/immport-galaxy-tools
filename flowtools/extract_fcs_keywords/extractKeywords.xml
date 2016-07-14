@@ -20,7 +20,7 @@
   <tests>
     <test>
       <param name="input" value="testfcs1.fcs"/>
-      <output name="keyword_file" file="out.tabular"/>
+      <output name="keyword_file" file="out.tabular" lines_diff="2"/>
     </test>
   </tests>
  <help><![CDATA[

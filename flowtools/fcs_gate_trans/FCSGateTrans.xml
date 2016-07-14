@@ -57,7 +57,7 @@
       <param name="gate" value="TRUE"/>
       <param name="format" value="FALSE"/>
       <output name="output" file="withcomp.flowtext"/>
-      <output name="graph" file="graph.pdf"/>
+      <output name="graph" file="graph.pdf" compare="sim_size"/>
       <output name="report" file="report.txt"/>
     </test>
     <test>
@@ -66,8 +66,8 @@
       <param name="gate" value="TRUE"/>
       <param name="format" value="TRUE"/>
       <output name="output" file="withcomp.flowtext"/>
-      <output name="fcsout" file="comp_gated.fcs"/>
-      <output name="graph" file="graph.pdf"/>
+      <output name="fcsout" file="comp_gated.fcs" compare="sim_size"/>
+      <output name="graph" file="graph.pdf" compare="sim_size"/>
       <output name="report" file="report.txt"/>
     </test>
   </tests>

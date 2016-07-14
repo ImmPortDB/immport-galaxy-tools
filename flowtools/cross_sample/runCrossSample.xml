@@ -44,9 +44,9 @@
       </param>
       <param name="centroid" value="mfi.flowmfi"/>
       <param name="mfi" value="mfi"/>
-      <output name="stats" file="out1.flowstat1"/>
+      <output name="stats" file="out1.flowstat1" lines_diff="6"/>
       <output name="allstats" file="out1.flowstat3"/>
-      <output name="mfistats" file="out1.flowstat2"/>
+      <output name="mfistats" file="out1.flowstat2" compare="sim_size"/>
       <output_collection name="output" type="list" count="3">
         <element name="input1" file="run1/input1.flowtext.crossSample"/>
         <element name="input2" file="run1/input2.flowtext.crossSample"/>
@@ -63,9 +63,9 @@
       </param>
       <param name="centroid" value="gmfi.flowmfi"/>
       <param name="mfi" value="gmfi"/>
-      <output name="stats" file="out2.flowstat1"/>
+      <output name="stats" file="out2.flowstat1" lines_diff="6"/>
       <output name="allstats" file="out2.flowstat3"/>
-      <output name="mfistats" file="out2.flowstat2"/>
+      <output name="mfistats" file="out2.flowstat2" compare="sim_size"/>
       <output_collection name="output" type="list" count="3">
         <element name="input1" file="run2/input1.flowtext.crossSample"/>
         <element name="input2" file="run2/input2.flowtext.crossSample"/>
