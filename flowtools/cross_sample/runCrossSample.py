@@ -97,7 +97,7 @@ def runCrossSample(inputfiles, fnames, mfi_file, output_dir, summary_stat, mfi_s
     outputs = {}
     # Run cent_adjust    
     for nm, flow_file in enumerate(inputfiles):
-        run_command = tool_directory + "/bin/cent_adjust mfi.txt " + flow_file
+        run_command = "cent_adjust mfi.txt " + flow_file
         print(run_command)
         os.system(run_command)
         flowname = os.path.split(flow_file)[1]
