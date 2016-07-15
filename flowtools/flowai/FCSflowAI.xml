@@ -59,25 +59,9 @@
       <param name="penFS" value="200"/>
       <param name="sideFM" value="both"/>
       <param name="highQ_FCS" value="TRUE"/>
-      <param name="lowQ_FCS" value="TRUE"/>
-      <param name="QC_FCS" value="TRUE"/>
-      <output name="full_rep" file="QCreport.html"/>
-      <output name="highfcs" file="hqdata.fcs" compare="sim_size"/>
-      <output name="lowfcs" file="lqdata.fcs" compare="sim_size"/>
-      <output name="qcfcs" file="alldata.fcs" compare="sim_size"/>
-    </test>
-    <test>
-      <param name="input" value="input.fcs"/>
-      <param name="remove" value="all"/>
-      <param name="alphaFR" value="0.01"/>
-      <param name="chremFS" value="TRUE"/>
-      <param name="outFS" value="FALSE"/>
-      <param name="penFS" value="200"/>
-      <param name="sideFM" value="both"/>
-      <param name="highQ_FCS" value="TRUE"/>
       <param name="lowQ_FCS" value="FALSE"/>
       <param name="QC_FCS" value="FALSE"/>
-      <output name="full_rep" file="std/QCreport.html"/>
+      <output name="full_rep" file="std/QCreport.html" lines_diff="2"/>
       <output name="highfcs" file="std/hqdata.fcs" compare="sim_size"/>
     </test>
     <test>
@@ -91,7 +75,7 @@
       <param name="highQ_FCS" value="TRUE"/>
       <param name="lowQ_FCS" value="TRUE"/>
       <param name="QC_FCS" value="TRUE"/>
-      <output name="full_rep" file="std/QCreport.html"/>
+      <output name="full_rep" file="std/QCreport.html" lines_diff="2"/>
       <output name="highfcs" file="std/hqdata.fcs" compare="sim_size"/>
       <output name="lowfcs" file="std/lqdata.fcs" compare="sim_size"/>
       <output name="qcfcs" file="std/alldata.fcs" compare="sim_size"/>
@@ -105,9 +89,9 @@
       <param name="penFS" value="200"/>
       <param name="sideFM" value="both"/>
       <param name="highQ_FCS" value="TRUE"/>
-      <param name="lowQ_FCS" value="TRUE"/>
-      <param name="QC_FCS" value="TRUE"/>
-      <output name="full_rep" file="nooutliers/QCreport_nooutliers.html"/>
+      <param name="lowQ_FCS" value="FALSE"/>
+      <param name="QC_FCS" value="FALSE"/>
+      <output name="full_rep" file="nooutliers/QCreport_nooutliers.html" lines_diff="2"/>
       <output name="highfcs" file="nooutliers/hqdata_nooutliers.fcs" compare="sim_size"/>
     </test>
     <test>
@@ -119,9 +103,9 @@
       <param name="penFS" value="200"/>
       <param name="sideFM" value="both"/>
       <param name="highQ_FCS" value="TRUE"/>
-      <param name="lowQ_FCS" value="TRUE"/>
-      <param name="QC_FCS" value="TRUE"/>
-      <output name="full_rep" file="withsfsc/QCreport_sfsc.html"/>
+      <param name="lowQ_FCS" value="FALSE"/>
+      <param name="QC_FCS" value="FALSE"/>
+      <output name="full_rep" file="withsfsc/QCreport_sfsc.html" lines_diff="2"/>
       <output name="highfcs" file="withsfsc/hqdata_sfsc.fcs" compare="sim_size"/>
     </test>
   </tests>

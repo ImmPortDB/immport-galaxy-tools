@@ -40,7 +40,7 @@ def generate_flowCL_query(list_markers, list_types):
     return("".join(query))
 
 def translate_profiles(input_file, tool_dir, html_dir):
-    tool = "/".join([tool_dir, "getOntology.R"])
+    tool = "getOntology.R"
     html_table = "".join([html_dir, "/CLprofiles.txt"])
     score_table = "".join(["cp ", input_file, " ", html_dir, "/scores.txt"])
     os.system(score_table)
@@ -119,7 +119,7 @@ def genFlowOverview(flow_stats,args):
         translate_profiles(args.scores, args.tool_directory, args.output_directory)
         html_template = "genOverviewCL.template"
 
-    env = Environment(loader=FileSystemLoader(args.tool_directory + "/templates"))
+    env = Environment(loader=FileSystemLoader("templates"))
     template = env.get_template(html_template)
 
     real_directory = args.output_directory.replace("/job_working_directory","")

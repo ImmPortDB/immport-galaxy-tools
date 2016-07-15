@@ -24,7 +24,7 @@
       <param name="input" value="input.flowstat1"/>
       <param name="inputmfi" value="input.flowstat2"/>
       <param name="mfistats" value="input.flowstat3"/>
-      <output name="output_file" file="out.html">
+      <output name="output_file" file="out.html" lines_diff="4">
         <extra_files type="file" name="csAllMFIs.tsv" value="csAllMFIs.tsv"/>
         <extra_files type="file" name="csOverview.tsv" value="csOverview.tsv"/>
       </output>
@@ -35,6 +35,11 @@
    
 -----
 
+.. class:: warningmark
+
+*This version of the tool does NOT support column editing. Please go to immportgalaxy.org if you wish to use this feature.pytho*
+
+-----
 **Input**
 
 This tool reads in summary tables from a CrossSample run (tab-separated file containing the counts of events in each population in each file that was run through CrossSample and tab-separated file containing the MFI for each marker in each population in each file.)

@@ -10,7 +10,7 @@ from shutil import copyfile
 def csOverview(inputfile, inputmfi, outputfile, outputdir, toolsdir):
     os.mkdir(outputdir)
 
-    env = Environment(loader=FileSystemLoader(toolsdir + "/templates"))
+    env = Environment(loader=FileSystemLoader("templates"))
     template = env.get_template("csOverview.template")
 
     real_directory = outputdir.replace("/job_working_directory","")

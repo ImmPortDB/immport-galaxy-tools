@@ -23,6 +23,8 @@ def compare_text(file1, file2):
             if not line == ln:
                 print ("ohno")
                 i += 1
+                with open("compare_report.txt", "a") as rt:
+                    rt.write(file1 + "\n" +  line + "\n" + file2 + "\n" + ln + "\n\n")
                 if i==10:
                     sys.exit(2)
         if i == 0:

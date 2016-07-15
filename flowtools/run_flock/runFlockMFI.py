@@ -21,7 +21,7 @@ def generateMFI(input_file_name, output_file_name, mfi_calc):
     return
 
 def runFlock(input_file, method, bins, density, output_file, profile, tool_directory):
-    run_command = tool_directory + "/bin/"  + method + " " + input_file
+    run_command = method + " " + input_file
     if bins:
         run_command += " " + bins
     if density:

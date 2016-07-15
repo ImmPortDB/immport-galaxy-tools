@@ -64,6 +64,12 @@
    
 -----
 
+.. class:: warningmark
+
+*This version of the tool does NOT support column editing. Please go to immportgalaxy.org if you wish to use this feature.pytho*
+
+-----
+
 **Input**
 
 This tool can read in the output of FLOCK or of CrossSample (a tab-separated file containing the markers fluorescence intensities for each event, as well as the population or cell type they were attributed to). If the option is selected, flowCL is used to associate each population defined by FLOCK to a Cell Ontology term.
