@@ -7,20 +7,20 @@ from argparse import ArgumentParser
 import pandas as pd
 from scipy.stats import gmean
 
-def generateMFI(input_file_name, output_file_name, mfi_calc):
-    flockdf = pd.read_table(input_file_name)
+def generate_MFI(input_file_name, output_file_name, mfi_calc):
+    flock_df = pd.read_table(input_file_name)
     if mfi_calc == "mfi":
-        MFIs = flockdf.groupby('Population').mean().round(decimals=2)
+        MFIs = flock_df.groupby('Population').mean().round(decimals=2)
     elif mfi_calc == "gmfi":
-        MFIs = flockdf.groupby('Population').agg(lambda x: gmean(list(x))).round(decimals = 2)
+        MFIs = flock_df.groupby('Population').agg(lambda x: gmean(list(x))).round(decimals = 2)
     else:
-        MFIs = flockdf.groupby('Population').median().round(decimals=2)
+        MFIs = flock_df.groupby('Population').median().round(decimals=2)
 
     with open(output_file_name,"w") as outf:
 		MFIs.to_csv(outf, sep="\t", float_format='%.0f')
     return
 
-def runFlock(input_file, method, bins, density, output_file, profile, tool_directory):
+def run_FLOCK(input_file, method, bins, density, output_file, profile, tool_directory):
     run_command = method + " " + input_file
     if bins:
         run_command += " " + bins
@@ -96,9 +96,9 @@ if __name__ == "__main__":
             help="File location for the output profile file.")
 
     args = parser.parse_args()
-    runFlock(args.input_file,args.method,args.bins,
+    run_FLOCK(args.input_file,args.method,args.bins,
              args.density, args.output_file, args.profile, args.tool_directory)
 
-    generateMFI(args.output_file, args.centroids, args.mfi_calc)
+    generate_MFI(args.output_file, args.centroids, args.mfi_calc)
 
     sys.exit(0)

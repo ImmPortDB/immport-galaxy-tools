@@ -72,7 +72,7 @@
 
 **Input**
 
-This tool can read in the output of FLOCK or of CrossSample (a tab-separated file containing the markers fluorescence intensities for each event, as well as the population or cell type they were attributed to). If the option is selected, flowCL is used to associate each population defined by FLOCK to a Cell Ontology term.
+Tool input is a tab-separated file containing markers fluorescence intensities for each event as well as population and is generated as part of FLOCK or CrossSample output.  If the option is selected, flowCL is used to associate populations defined by FLOCK to a Cell Ontology term.
 
 **Output**
 
@@ -140,4 +140,3 @@ The CL terms hyperlink to their representation in the Immport Cell Ontology brow
    <citation type="doi">10.1093/bioinformatics/btu807</citation>
  </citations>
 </tool>
-

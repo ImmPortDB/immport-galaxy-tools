@@ -40,9 +40,10 @@
 *This version of the tool does NOT support column editing. Please go to immportgalaxy.org if you wish to use this feature.pytho*
 
 -----
+
 **Input**
 
-This tool reads in summary tables from a CrossSample run (tab-separated file containing the counts of events in each population in each file that was run through CrossSample and tab-separated file containing the MFI for each marker in each population in each file.)
+Input files are summary tables generated from a CrossSample analysis (tab-separated file containing counts of events in each population for each file run through CrossSample and a tab-separated file containing the MFI for each marker in each population for each file.)
 
 **Output**
 
@@ -117,4 +118,3 @@ The user can reorder the markers, and choose which samples and/or populations to
  ]]>
  </help>
 </tool>
-
