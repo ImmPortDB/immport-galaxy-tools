@@ -49,6 +49,10 @@ Input files are summary tables generated from a CrossSample analysis (tab-separa
 
 The output is a page that allows visualization of the data. 
 
+.. class:: warningmark
+
+*The output of this tool is interactive. However, comments or any other modifications made are not saved when exiting the view.*
+
 -----
 
 **Example**

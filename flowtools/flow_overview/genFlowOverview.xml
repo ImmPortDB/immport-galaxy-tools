@@ -82,6 +82,10 @@ The output is a page with multiple tabs that allows visualization of the data.
 
 The FLOCK output is proportionally downsampled to 20K events for the visualization.
 
+.. class:: warningmark
+
+*The output of this tool is interactive. However, comments or any other modifications made are not saved when exiting the view.*
+
 -----
 
 **Example**
