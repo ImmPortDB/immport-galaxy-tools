@@ -15,34 +15,38 @@ def run_flowCL(phenotype, output_file, output_dir, tool_dir):
     output_pdf = "".join([output_dir, "/flowCL_res.pdf"])
     run_command = " ". join(["Rscript --slave --vanilla", tool, "--args", output_txt, phenotype])
     os.system(run_command)
-    
+
     table = defaultdict(list)
     labels = []
     nb_match = 0
-    with open(output_txt, "r") as txt:
-        check = txt.readline().strip()
-        if (not check):
-            sys.exit(2)
-        else:
-            i = -1
-            for lines in txt:
-                data = lines.strip("\n").split("\"")
-                if data[0].strip():
-                    labels.append(data[0].strip())
-                    i += 1
-                    if data[0].startswith("Score"):
-                        count_matches = data[1].split(") ")
-                        nb_match = len(count_matches) - 1
-                table[i].append(data[1])
+    if os.path.isfile(output_txt):
+        with open(output_txt, "r") as txt:
+            check = txt.readline().strip()
+            if (not check):
+                sys.exit(2)
+            else:
+                i = -1
+                for lines in txt:
+                    data = lines.strip("\n").split("\"")
+                    if data[0].strip():
+                        labels.append(data[0].strip())
+                        i += 1
+                        if data[0].startswith("Score"):
+                            count_matches = data[1].split(") ")
+                            nb_match = len(count_matches) - 1
+                    table[i].append(data[1])
+    else:
+        sys.stderr.write("There are no results with this query. Please check your markers if you believe there should be.")
+        sys.exit(2)
     with open(output_table, "w") as tbl:
-        tbl.write("1\t2\n")       
+        tbl.write("1\t2\n")
         for j in table:
             newline = " ".join(table[j])
             for k in range(1, nb_match + 1):
                 cur_stg = "".join([str(k+1), ")"])
                 new_stg = "".join(["<br>", cur_stg])
                 newline = newline.replace(cur_stg, new_stg)
-                
+
             if labels[j] == "Cell ID":
                 cls = newline.split(" ")
                 for m in range(0, len(cls)):
@@ -51,7 +55,7 @@ def run_flowCL(phenotype, output_file, output_dir, tool_dir):
                         link = "".join(['<a href="http://www.immport-labs.org/immport-ontology/public/home/home/', cl_id, '" target="_blank">'])
                         cls[m] = "".join([link, cls[m], "</a>"])
                 newline = " ".join(cls)
-            tbl.write("\t".join([labels[j], newline]) + "\n")            
+            tbl.write("\t".join([labels[j], newline]) + "\n")
 
     get_graph = " ".join(["mv flowCL_results/*.pdf", output_pdf])
     os.system(get_graph)
@@ -97,7 +101,7 @@ if __name__ == "__main__":
             help = "Path to the tool directory")
 
     args = parser.parse_args()
-    
+
     markers = "".join(args.markers)
     run_flowCL(markers, args.output_file, args.output_dir, args.tool_dir)
     sys.exit(0)
