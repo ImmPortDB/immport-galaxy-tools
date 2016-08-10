@@ -168,7 +168,7 @@ Signal acquistion check: Orange background (or yellow depending on the user's co
 
 Dynamic range check: red and blue lines reflect the detected number of events over time. The x-axis corresponds to that of the signal acquisition plot.
 
-.. image:: static/images/"a"margins.png
+.. image:: static/images/margins.png
 
  ]]>
  </help>

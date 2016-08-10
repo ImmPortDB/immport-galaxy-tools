@@ -17,7 +17,7 @@
  ]]>
   </command>
   <inputs>
-    <param format="flowtext" name="input" type="data_collection" collection_type="list" label="Flow text files Collection"/>
+    <param format="flowtext" name="input" type="data_collection" collection_type="list" label="Flowtext files Collection"/>
     <param format="flowmfi" name="centroid" type="data" label="Centroid file"/>
     <param name="mfi" type="select" label="Calculate centroids using:">
       <option value="mfi" selected="true">Mean Fluorescence Intensity</option>
@@ -75,7 +75,7 @@
   </tests>
   <help><![CDATA[
    This tool runs CrossSample using the MFI from FLOCK and text-converted FCS files.
-   
+
 -----
 
 **Input**
@@ -94,7 +94,7 @@ A table of the population composition of each file is generated as well as MFI a
 .. class:: infomark
 
 Tip: If headers in each text-converted FCS file do not match those in the centroid file, the program will not run. Edit the input file using the Remove, rearrange and/or rename columns tool in the Flow File Tools section prior to Cross Sample analysis.
- 
+
 -----
 
 **Example**
