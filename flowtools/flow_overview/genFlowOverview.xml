@@ -166,9 +166,7 @@ The user can reorder the markers, and choose which populations to display either
 If the ontology option was selected, the following two tabs are displayed.
 The CL terms hyperlink to their representation in the Immport Cell Ontology browser. The full flowCL run summary is accessible by clicking on the phenotype.
 
-.. image:: static/images/profileCL.png
-
-.. image:: static/images/popprofiles.png
+.. image:: static/images/profileCL_go.png
 
  ]]>
  </help>
