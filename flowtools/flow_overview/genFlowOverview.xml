@@ -163,7 +163,7 @@ The user can reorder the markers, and choose which populations to display either
 
 .. image:: static/images/pcflock.png
 
-If the ontology option was selected, the following two tabs are displayed.
+If the ontology option was selected, the following tab is displayed.
 The CL terms hyperlink to their representation in the Immport Cell Ontology browser. The full flowCL run summary is accessible by clicking on the phenotype.
 
 .. image:: static/images/profileCL_go.png
