@@ -12,6 +12,12 @@ def extract_pop(in_file, pop_list, out_file):
     dfout.to_csv(out_file, sep="\t", index = False)
     return
 
+def remove_pop(in_file, pop_list, out_file):
+    df = pd.read_table(in_file, dtype={'Population': object})
+    dfout = df.loc[-df['Population'].isin(pop_list)]
+    dfout.to_csv(out_file, sep="\t", index = False)
+    return
+
 if __name__ == "__main__":
     parser = ArgumentParser(
              prog="ExtractPop",
@@ -35,6 +41,12 @@ if __name__ == "__main__":
             required=True,
             help="Name of the output file.")
 
+    parser.add_argument(
+            '-m',
+            dest="method",
+            required=True,
+            help="What to do with the populations.")
+
     args = parser.parse_args()
     
     ## check populations
@@ -46,6 +58,9 @@ if __name__ == "__main__":
             for popn in tmp_pops:
                 populations.append(popn.strip())    
         else:
-            sys.exit(3)
-    extract_pop(args.input_file, populations, args.output_file)
+            sys.exit(2)
+    if args.method == "extract":
+        extract_pop(args.input_file, populations, args.output_file)
+    else:
+        remove_pop(args.input_file, populations, args.output_file)
     sys.exit(0)
