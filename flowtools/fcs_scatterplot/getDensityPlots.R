@@ -51,7 +51,7 @@ generateGraph <- function(input, channels, output, plot_default, flag_pdf, pdf_o
   	  quit(save = "no", status = 10, runLast = FALSE)
   	}
   }
-  png(output, height=600, width=600)
+  png(output, type="cairo", height=600, width=600)
   par(mfrow=c(2,2))
   for (m in 1:(nb_markers - 1)) {
     for (n in (m+1):nb_markers) {

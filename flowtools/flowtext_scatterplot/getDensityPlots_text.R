@@ -104,7 +104,7 @@ generateGraphFromText <- function(input, channels, output, plot_default, flag_pd
       plots[[i]] <- p
     }
   }
-  png(output, width=800, height=800)
+  png(output, type="cairo", width=800, height=800)
       multiplot(plotlist = plots, cols = 2)
     dev.off()
   if (flag_pdf){
