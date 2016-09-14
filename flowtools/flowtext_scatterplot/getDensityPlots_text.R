@@ -56,18 +56,22 @@ generateGraphFromText <- function(input, channels, output, plot_default, flag_pd
   markers <- colnames(fcs)
 
   if (plot_default) {
-    channels <- c(grep(colnames(fcs), pattern="FSC"),
-                  grep(colnames(fcs), pattern="SSC"))
-    if (length(channels) > 2) {
-      #get first FSC and corresponding SSC
-      channels <- c(grep(colnames(fcs), pattern="FSC-A"),
-                    grep(colnames(fcs), pattern="SSC-A"))
-      if (length(channels) == 0) {
-        channels <- c(grep(colnames(fcs), pattern="FSC-H"),
-                      grep(colnames(fcs), pattern="SSC-H"))
+    channels <- c(grep(colnames(fcs), pattern="Forward scatter", ignore.case=TRUE),
+                  grep(colnames(fcs), pattern="Side scatter", ignore.case=TRUE))
+  	if (length(channels) == 0){ 
+      channels <- c(grep(colnames(fcs), pattern="FSC"),
+                    grep(colnames(fcs), pattern="SSC"))
+      if (length(channels) > 2) {
+        #get first FSC and corresponding SSC
+        channels <- c(grep(colnames(fcs), pattern="FSC-A"),
+                      grep(colnames(fcs), pattern="SSC-A"))
         if (length(channels) == 0) {
-          channels <- c(grep(colnames(fcs), pattern="FSC-W"),
-                        grep(colnames(fcs), pattern="SSC-W"))
+          channels <- c(grep(colnames(fcs), pattern="FSC-H"),
+                        grep(colnames(fcs), pattern="SSC-H"))
+          if (length(channels) == 0) {
+            channels <- c(grep(colnames(fcs), pattern="FSC-W"),
+                          grep(colnames(fcs), pattern="SSC-W"))
+          }
         }
       }
     }
