@@ -68,7 +68,7 @@ if __name__ == "__main__":
     for pops in populations:
         if not is_int(pops):
             sys.exit(3)
-    if args.method == "extract":
+    if args.method == "selected":
         extract_pop(args.input_file, populations, args.output_file)
     else:
         remove_pop(args.input_file, populations, args.output_file)
