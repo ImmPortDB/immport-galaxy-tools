@@ -12,10 +12,10 @@ def generate_flowCL_query(list_markers, list_types):
         return("pb with headers")
     query = []
     # go through both lists, remove fsc/ssc
-    for i in range(1, len(list_markers)):
+    for i in range(0, len(list_markers)):
         if not list_markers[i].startswith("FSC") and not list_markers[i].startswith("SSC"):
             query.append(list_markers[i].upper())
-            query.append(profile_key[list_types[i]])
+            query.append(list_types[i])
     # return concatenated string
     return("".join(query))
 
@@ -51,7 +51,7 @@ def run_flowCL(phenotype, output_file, output_dir, tool_dir):
         sys.stderr.write("There are no results with this query. Please check your markers if you believe there should be.")
         sys.exit(2)
     with open(output_table, "w") as tbl:
-        tbl.write("1\t2\n")
+        tbl.write("1\t2\nQuery\t" + phenotype + "\n")
         for j in table:
             newline = " ".join(table[j])
             for k in range(1, nb_match + 1):
@@ -93,7 +93,7 @@ if __name__ == "__main__":
             required = True,
             action = 'append',
             help = "marker queries.")
-            
+
     parser.add_argument(
             '-y',
             dest = "marker_types",
@@ -121,8 +121,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    markers = [m for m in args.markers]
-    types = [y for y in args.marker_types]
-    generate_flowCL_query(markers, types)
+    markers = [m.strip() for m in args.markers]
+    query = generate_flowCL_query(markers, args.marker_types)
     run_flowCL(query, args.output_file, args.output_dir, args.tool_dir)
     sys.exit(0)
