@@ -20,7 +20,7 @@ def extract_pop(in_file, pop_list, out_file):
 
 def remove_pop(in_file, pop_list, out_file):
     df = pd.read_table(in_file, dtype={'Population': object})
-    dfout = df.loc[-df['Population'].isin(pop_list)]
+    dfout = df.loc[~df['Population'].isin(pop_list)]
     dfout.to_csv(out_file, sep="\t", index = False)
     return
 
