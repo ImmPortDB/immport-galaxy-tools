@@ -1,5 +1,5 @@
 /*
- * Initialize variables for parallelCoordinates display 
+ * Initialize variables for parallelCoordinates display
 */
 var pcApp = pcApp || {};
 
@@ -26,7 +26,7 @@ var displaySmpTable = function() {
             .append('<tr><td align="center">'
                    + '<input type="checkbox" id="' + d.SampleName + '" '
                    + 'checked class="popSelectPC" value='
-                   + d.SampleNumber + '/></td><td title="' + newSmpNames[d.SampleName] 
+                   + d.SampleNumber + '/></td><td title="' + newSmpNames[d.SampleName]
                    + '">' + newSmpNames[d.SampleName]
                    + '</td><td><span style="background-color:'
                    + color_palette[d.SampleNumber + 1]
@@ -93,7 +93,7 @@ var displayTableGrid = function() {
         d.SampleName = idx + 1;
         delete(d.FileID);
     });
-    
+
     var updatedHeaders = Object.keys(pcApp.updatedData[0]);
     var displayData = pcApp.updatedData.filter(function(d,i) {
         if ($.inArray(i,pcApp.selectedSamples) > -1) {
@@ -109,9 +109,9 @@ var displayTableGrid = function() {
         colNames.push({"data":d});
         if (i < targetCol){
             pctargets.push(i);
-        }        
+        }
     });
-    var textCol = [targetCol, targetCol + 1]; 
+    var textCol = [targetCol, targetCol + 1];
     var colOrder = textCol.concat(pctargets);
 
     var tableHTML = [
@@ -123,20 +123,20 @@ var displayTableGrid = function() {
         '</thead>',
         '</table>',
     ];
-    
+
     $('#tableDivPC').html(tableHTML.join("\n"));
     var pcTable = $('#pcTable').DataTable({
         columns: colNames,
         data: displayData,
         order: [[ targetCol, "asc" ]],
-        pageLength: 10, 
+        pageLength: 10,
         //paging: false,
         scrollY: 250,
         scrollCollapse: true,
         scrollX: true,
         dom: '<"top"B>t<"bottom"lip><"clear">',
         columnDefs: [
-          { 
+          {
             targets: pctargets,
             className: "dt-body-right",
             render: function(data,type,row){
@@ -201,13 +201,13 @@ var displayParallelPlot = function() {
 
     var x = d3.scale.ordinal().rangePoints([0, width], 1);
     var y = {};
-	var dragging = {};
+    var dragging = {};
     var line = d3.svg.line();
     var axis = d3.svg.axis()
                      .orient("left")
                      .tickFormat(d3.format("d"))
                      .ticks(5);
-    
+
     var ymax = 0;
     for (var m = 0, n = pcApp.flowData.length; m < n; m++){
         for (var p in pcApp.flowData[m]){
@@ -226,7 +226,7 @@ var displayParallelPlot = function() {
         .attr("dy", "1em")
         .style("text-anchor", "middle")
         .text("Fraction of population in sample");
-    
+
     var dimensions = d3.keys(pcApp.flowData[0]).filter(function(d) {
         return (y[d] = d3.scale.linear()
             .domain([0,parseInt(ymax)+1])
@@ -246,7 +246,7 @@ var displayParallelPlot = function() {
     function transition(g) {
       return g.transition().duration(500);
     }
-    
+
     function brush() {
       var actives = dimensions.filter(function(p)
                     { return !y[p].brush.empty(); });
@@ -288,11 +288,11 @@ var displayParallelPlot = function() {
         .enter()
         .append("path")
         .attr("d", function(d) {
-			var smp = d.SampleNumber;
+            var smp = d.SampleNumber;
             return path(pcApp.flowData[smp]);
-		})
+        })
         .attr("stroke",function(d){
-			var smp = d.SampleNumber + 1;
+      var smp = d.SampleNumber + 1;
             return color_palette[smp];})
         .attr("stroke-width", 1);
 
@@ -326,7 +326,7 @@ var displayParallelPlot = function() {
                 .duration(0)
                 .attr("visibility", null);
           }));
-        
+
     // Add an axis and title.
     g.append("g")
         .attr("class", "axis")
@@ -345,7 +345,7 @@ var displayParallelPlot = function() {
         .selectAll("rect")
         .attr("x", -8)
         .attr("width", 16);
-        
+
     // Control line opacity.
     $('#PCline_opacity').on('change', (function() {
       var val = $(this).val();
@@ -375,25 +375,25 @@ var displayParallelCoordinates = function() {
             alert("Problem Retrieving Data");
             return;
         }
-  */ 
+  */
         pcApp.origData = $.extend(true,[],pctablecontent);
         pcApp.headers = Object.keys(pcApp.origData[0]);
         pcApp.headers.splice(pcApp.headers.indexOf("FileID"), 1);
-        
+
         pcApp.origData.forEach(function(d,idx){
             d.SampleNumber = idx;
-	//		delete d.FileID;
+  //    delete d.FileID;
         })
-		
-        /* 
+
+        /*
          * For the plot use only the proportion of each
          * population per sample. Store in flowData
         */
         pcApp.flowData = $.extend(true,[],pctablecontent);
         pcApp.flowData.forEach(function(d,idx){
             delete d.SampleName;
-			delete d.FileID;
-			delete d.Comment;
+      delete d.FileID;
+      delete d.Comment;
         })
         for (var i = 0; i < pcApp.flowData.length; i++) {
             pcApp.allSamples.push(i);
@@ -402,7 +402,7 @@ var displayParallelCoordinates = function() {
         displaySmpTable();
         displayTableGrid();
         displayParallelPlot();
-    
+
         $("#resetPCDisplay").on("click",function() {
             for (var i = 0; i < pcApp.flowData.length; i++) {
                 pcApp.allSamples.push(i);
@@ -415,7 +415,7 @@ var displayParallelCoordinates = function() {
             $('#plotDivPC .foreground path').css('stroke-opacity', opcty);
             $('#pc_opacity').html("80%");
             $('#PCline_opacity').val(0.8);
-            
+
             displaySmpTable();
             displayTableGrid();
             displayParallelPlot();
