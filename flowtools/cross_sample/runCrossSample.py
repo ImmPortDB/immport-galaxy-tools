@@ -9,9 +9,11 @@ import pandas as pd
 
 #
 # version 1.1 -- April 2016 -- C. Thomas
-# modified to read in several input files and output to a directory + generates summary statistics
+# modified to read in several input files and output to a directory
+# + generates summary statistics
 # also checks before running that input files are consistent with centroid file
 #
+
 
 def compare_MFIs(input_files, f_names, mfi_file):
     header_MFIs = ""
@@ -24,16 +26,17 @@ def compare_MFIs(input_files, f_names, mfi_file):
         with open(files, "r") as inf:
             hdrs = inf.readline()
             if hdrs != header_MFIs:
-                sys.stderr.write(hdrs + "headers in " + f_names[hh] + "are not consistent with FLOCK centroid file\n")
+                sys.stderr.write(hdrs + "headers in " + f_names[hh] + " are not consistent with FLOCK centroid file:\n" + header_MFIs + "\n")
                 flag_error = True
-    if flag_error == True:
+    if flag_error:
         sys.exit(2)
+
 
 def stats_MFIs(cs_df, ctr, mfi_calc):
     if mfi_calc == "mfi":
         MFIs = cs_df.groupby('Population').mean().round(decimals=2)
     elif mfi_calc == "gmfi":
-        MFIs = cs_df.groupby('Population').agg(lambda x: gmean(list(x))).round(decimals = 2)
+        MFIs = cs_df.groupby('Population').agg(lambda x: gmean(list(x))).round(decimals=2)
     else:
         MFIs = cs_df.groupby('Population').median().round(decimals=2)
     pop_freq = (cs_df.Population.value_counts(normalize=True) * 100).round(decimals=2)
@@ -42,6 +45,7 @@ def stats_MFIs(cs_df, ctr, mfi_calc):
     MFIs['Population'] = MFIs.index
     MFIs['SampleName'] = "".join(["Sample", str(ctr).zfill(2)])
     return MFIs
+
 
 def get_pop_prop(input_files, summary_stat, mfi_stats, marker_names, mfi_calc):
     pop_count = defaultdict(dict)
@@ -61,11 +65,11 @@ def get_pop_prop(input_files, summary_stat, mfi_stats, marker_names, mfi_calc):
                     pop_count[files][pops] += 1
                 else:
                     pop_count[files][pops] = 1
-            if (len(pop_count[files])> nb_pop):
+            if (len(pop_count[files]) > nb_pop):
                 nb_pop = len(pop_count[files])
             ctr_mfi += 1
             cs_stats = stats_MFIs(cs, ctr_mfi, mfi_calc)
-            cs_stats.to_csv(mfis, sep="\t", header = False, index = False)
+            cs_stats.to_csv(mfis, sep="\t", header=False, index=False)
 
     ctr = 0
     with open(summary_stat, "w") as outf:
@@ -75,21 +79,23 @@ def get_pop_prop(input_files, summary_stat, mfi_stats, marker_names, mfi_calc):
         for eachfile in pop_count:
             tmp = []
             for num in range(1, nb_pop + 1):
-                if not num in pop_count[eachfile]:
+                if num not in pop_count[eachfile]:
                     pop_count[eachfile][num] = 0
-                tmp.append(str((pop_count[eachfile][num] / float(tot[eachfile])) * 100 ) )
+                tmp.append(str((pop_count[eachfile][num] / float(tot[eachfile])) * 100))
             props = "\t".join(tmp)
             ctr += 1
             sample_name = "".join(["Sample", str(ctr).zfill(2)])
             outf.write("\t".join([input_files[eachfile], sample_name, props]) + "\n")
 
-def run_cross_sample(input_files, f_names, mfi_file, output_dir, summary_stat, mfi_stats, tool_directory, mfi_calc):
+
+def run_cross_sample(input_files, f_names, mfi_file, output_dir, summary_stat,
+                     mfi_stats, tool_directory, mfi_calc):
     markers = ""
     # Strip off Header Line
-    with open(mfi_file,"r") as mfi_in, open("mfi.txt", "w") as mfi_out:
+    with open(mfi_file, "r") as mfi_in, open("mfi.txt", "w") as mfi_out:
         markers = mfi_in.readline().strip("\n")
         for line in mfi_in:
-           mfi_out.write(line)
+            mfi_out.write(line)
 
     # Create output directory
     if not os.path.exists(output_dir):
@@ -104,7 +110,7 @@ def run_cross_sample(input_files, f_names, mfi_file, output_dir, summary_stat, m
         flow_name = os.path.split(flow_file)[1]
         outfile = os.path.join(output_dir, flow_name + ".flowclr")
         outputs[outfile] = f_names[nm]
-        with open(flow_file,"r") as flowf, open("population_id.txt","r") as popf, open(outfile, "w") as outf:
+        with open(flow_file, "r") as flowf, open("population_id.txt", "r") as popf, open(outfile, "w") as outf:
             f_line = flowf.readline()
             f_line = f_line.rstrip()
             f_line = f_line + "\tPopulation\n"
@@ -119,26 +125,28 @@ def run_cross_sample(input_files, f_names, mfi_file, output_dir, summary_stat, m
     get_pop_prop(outputs, summary_stat, mfi_stats, markers, mfi_calc)
     return
 
+
 def generate_CS_stats(mfi_stats, all_stats):
     df = pd.read_table(mfi_stats)
-    means = df.groupby('Population').mean().round(decimals = 2)
-    medians = df.groupby('Population').median().round(decimals = 2)
-    stdev = df.groupby('Population').std().round(decimals = 2)
+    means = df.groupby('Population').mean().round(decimals=2)
+    medians = df.groupby('Population').median().round(decimals=2)
+    stdev = df.groupby('Population').std().round(decimals=2)
     all_markers = []
     with open(mfi_stats, "r") as ms:
         ms_fl = ms.readline().strip()
         all_markers = ms_fl.split("\t")[0:-2]
 
     with open(all_stats, "w") as mstats:
-        hdgs = ["\t".join(["_".join([mrs, "mean"]),"_".join([mrs, "median"]),"_".join([mrs, "stdev"])]) for mrs in all_markers]
+        hdgs = ["\t".join(["_".join([mrs, "mean"]), "_".join([mrs, "median"]), "_".join([mrs, "stdev"])]) for mrs in all_markers]
         mstats.write("Population\t")
         mstats.write("\t".join(hdgs) + "\n")
         for pops in set(df.Population):
             tmp_line = []
             for mar in all_markers:
-                tmp_line.append("\t".join([str(means.loc[pops,mar]), str(medians.loc[pops,mar]), str(stdev.loc[pops,mar])]))
+                tmp_line.append("\t".join([str(means.loc[pops, mar]), str(medians.loc[pops, mar]), str(stdev.loc[pops, mar])]))
             mstats.write(str(pops) + "\t")
             mstats.write("\t".join(tmp_line) + "\n")
+
 
 if __name__ == "__main__":
     parser = ArgumentParser(
