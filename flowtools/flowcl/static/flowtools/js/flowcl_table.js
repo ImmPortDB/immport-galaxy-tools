@@ -1,3 +1,6 @@
+// Copyright (c) 2016 Northrop Grumman.
+// All rights reserved.
+
 var flowcl_table = './flowCL_table.txt';
 
 var displayFlowCLTable = function(){
