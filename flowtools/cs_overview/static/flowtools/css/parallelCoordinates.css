@@ -11,53 +11,59 @@
     //border-color: #FCF8E3;
     //border-width: 1px;
 }
-
+/*
+** This for stacked / bar plot
+*/
+.optionButtons{
+    //vertical-align: center;
+    padding-bottom: 8px;
+}
+ #togglePlot {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 60px;
+    width: 90px;
+    padding: 4px 8px 8px 4px;
+}
 /*
 ** DataTables config
 */
 div.dt-buttons {
     float: right;
 }
-
 th {
     font-size:16px;
     text-align: center;
 }
-
 body td {
     max-width: 50px;
     font-size: 14px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .pctable td {
     max-width: 100px;
 }
-
 .dtable td {
     max-width: 50px;
     word-break: break-all;
     word-wrap: break-word;
 }
-
 .popt thead {
     display:none;
 }
-
 .popt td {
     max-width: 40px;
     word-break: break-all;
     word-wrap: break-word;
 }
-
 div.dataTables_wrapper {
     width: 95%;
     margin: 0 auto;
 }
-
 /*
-** Opacity
+** Opacity widget
 */
 .widget {
   margin-top: 4px;
@@ -69,7 +75,6 @@ div.dataTables_wrapper {
   text-align: center;
  // float: right;
 }
-
 /*
  * This section for coordinates plot
 */
@@ -77,32 +82,26 @@ div.dataTables_wrapper {
     text-align: center;
     padding: 10px;
 }
-
 .table {
     font-size: 14px;
 }
-
 svg {
   font: 10px sans-serif;
 }
-
 .background path {
   fill: none;
   stroke: #ddd;
   shape-rendering: crispEdges;
 }
-
 .foreground path {
   fill: none;
   stroke-opacity: .8;
 }
-
 .brush .extent {
   fill-opacity: .3;
   stroke: #fff;
   shape-rendering: crispEdges;
 }
-
 .axis line,
 .axis path {
   fill: none;
@@ -110,17 +109,50 @@ svg {
   stroke-width: 2;
   shape-rendering: crispEdges;
 }
-
 .axis text {
   text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
 }
-
 .xlabel {
   font-size: 14px;
   fill: #808080;
 }
-
 .ylabel {
   font-size: 16px;
   fill: #808080;
+}
+/*
+** This section for boxplots
+*/
+.box {
+  font: 10px sans-serif;
+}
+.box line,
+.box rect,
+.box circle {
+   fill: red;
+  stroke: #000;
+  stroke-width: 1px;
+}
+.box .center {
+  stroke-dasharray: 3,3;
+}
+.box .outlier {
+  fill: none;
+  stroke: #000;
+}
+.axisbp path,
+.axisbp line {
+  stroke-width: 1px;
+  fill:
+}
+.y.axisbp path {
+  stroke-width: 2;
+  stroke: #000;
+  fill: none;
+}
+.x.axisbp path {
+  fill: none;
+  stroke: #C8C8C8;
+  stroke-width: 0px;
+  shape-rendering: crispEdges;
 }
