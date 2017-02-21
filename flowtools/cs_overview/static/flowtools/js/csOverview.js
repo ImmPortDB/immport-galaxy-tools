@@ -46,8 +46,7 @@ var displayProp = function() {
         popTableHeadings = [],
         propEditorData = [],
         popEditorData = [],
-        pctablecontent = [],
-        smpcol = 2;,
+        smpcol = 2,
         propHTML = '<table id="proptable" class="dtable display compact nowrap" cellspacing="0" width="100%"/>',
         popHTML = '<table id="popnamestable" class="popt dtable display nowrap compact" cellspacing="0" width="100%"/>';
 
@@ -213,31 +212,6 @@ var displayStackedAreaPlot = function() {
   });
 };
 
-/*
-var displayStackedBarplot = function() {
-  $.ajax({
-    url: url,
-    dataType: "text",
-    success: function(text) {
-      configBarplot = {
-        displaybutton : '#updateDisplayB',
-        popSelectj : '.popSelectB',
-        plotdivj : '#plotDivB',
-        csdata : preprocess(text),
-        plotdiv : 'plotDivB',
-        type : 'barplot',
-        table : '#popTableB tbody',
-        popSelect : 'popSelectB',
-        allPopulations : [],
-        selectedPopulations : [],
-        popSelectAll : '#popSelectAllB',
-        popSelectCheck: '.popSelectB:checked'
-      };
-      displayToolbar(configBarplot);
-    }
-  });
-};
-*/
 var displayBoxplot = function() {
   $.ajax({
     url: boxplotUrl,

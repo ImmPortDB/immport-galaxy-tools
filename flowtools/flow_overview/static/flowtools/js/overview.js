@@ -34,7 +34,6 @@ var displayMFI = function() {
     var mfiHdgs = [],
         pp = [],
         mfiTableData = [],
-        tableContent = [],
         mfiTableHeadings = [],
         mfiTargets = [],
         mfiTableHTML = '<table id="mfitable" class="dtable display compact" cellspacing="0" width="100%"/>',
