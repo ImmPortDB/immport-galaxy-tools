@@ -27,7 +27,7 @@
   </inputs>
   <outputs>
     <collection type="list" label="CrossSample on ${input.name}" name="output">
-        <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="crossSampleOutputs" format="flowclr" />
+      <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="crossSampleOutputs" format="flowclr" />
     </collection>
     <data format="flowstat1" name="stats" label="Population distribution after CrossSample on ${input.name} using ${mfi}"/>
     <data format="flowstat2" name="mfistats" label="${mfi} centroids of CrossSample on ${input.name} using ${mfi}"/>
@@ -150,13 +150,13 @@ Tip: If headers in each text-converted FCS file do not match those in the centro
    4          84.85        84.85          nan           ... 8.52            8.52              nan
    5          161.82       132.77         61.29         ... 0.95            0.37              1.06
  ]]>
- </help>
- <citations>
-   <citation type="doi">10.1002/cyto.b.20554</citation>
-   <citation type="doi">10.3389/fimmu.2012.00302</citation>
-   <citation type="doi">10.1371/journal.pone.0038408</citation>
-   <citation type="doi">10.1371/journal.ppat.1003076</citation>
-   <citation type="doi">10.1016/j.clim.2012.12.003</citation>
-   <citation type="doi">10.1038/srep02327</citation>
- </citations>
+  </help>
+  <citations>
+    <citation type="doi">10.1002/cyto.b.20554</citation>
+    <citation type="doi">10.3389/fimmu.2012.00302</citation>
+    <citation type="doi">10.1371/journal.pone.0038408</citation>
+    <citation type="doi">10.1371/journal.ppat.1003076</citation>
+    <citation type="doi">10.1016/j.clim.2012.12.003</citation>
+    <citation type="doi">10.1038/srep02327</citation>
+  </citations>
 </tool>

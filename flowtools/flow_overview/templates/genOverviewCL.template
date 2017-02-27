@@ -220,13 +220,7 @@ th{background-color:#3e6db0;color:#fff;padding:5px}
     </div>
 </div>
 
-<!--
-</div>
-</div>
--->
-
 <script>
-var outputDirectory = "{{ outputDirectory }}";
 var mfiLoaded = false;
 var populationLoaded = false;
 var overviewPlotLoaded = false;

@@ -4,8 +4,8 @@
     <requirement type="package" version="0.17.1">pandas</requirement>
   </requirements>
   <stdio>
-       <exit_code range="1:" />
-   </stdio>
+    <exit_code range="1:" />
+  </stdio>
   <command><![CDATA[
     python $__tool_directory__/txtdiagnosis.py -i "${input}" -o "${output}" -n "${input.name}"
   ]]>
@@ -34,7 +34,7 @@
       </output>
     </test>
   </tests>
- <help><![CDATA[
+  <help><![CDATA[
    This tool looks for potential errors in txt-converted FCS files.
 
 -----
@@ -70,6 +70,6 @@ The output is a report with the errors and corresponding line numbers.
    WARNING: line 2 in example_file.txt contains non-numeric results
    WARNING: line 4 in example_file.txt contains non-numeric results
    WARNING: line 8 in example_file.txt contains non-numeric results
- ]]>
- </help>
+  ]]>
+  </help>
 </tool>

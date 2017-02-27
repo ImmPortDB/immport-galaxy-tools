@@ -7,7 +7,7 @@
     <exit_code range="2:" level="fatal" description="See stderr for more details." />
   </stdio>
   <command><![CDATA[
-      python $__tool_directory__/FCSstats_txt.py -i "${input}" -o "${output}"
+    python $__tool_directory__/FCSstats_txt.py -i "${input}" -o "${output}"
   ]]>
   </command>
   <inputs>
@@ -22,7 +22,7 @@
       <output name="output" file="output.tabular"/>
     </test>
   </tests>
- <help><![CDATA[
+  <help><![CDATA[
    This tool generates a summary of a txt-converted FCS file and list of markers.
 
 -----
