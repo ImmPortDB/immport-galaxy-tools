@@ -1,8 +1,7 @@
 <tool id="auto_collapse_populations" name="Collapse populations automatically" version="1.0">
   <description>based on quartile binning from FLOCK results</description>
   <requirements>
-    <requirement type="package" version="0.17.1">pandas</requirement>
-    <requirement type="package" version="1.0.0">ig-flowtools</requirement>
+    <requirement type="package" version="1.4.0">ig-flowtools</requirement>
   </requirements>
   <stdio>
     <exit_code range="1:" />
@@ -24,7 +23,7 @@
       <param name="input" value="input.flowclr"/>
       <param name="profile=" value="profile.flowscore"/>
       <param name="report" value="report.txt"/>
-      <output name="output" file="output.flowclr"/>
+      <output name="output" file="output.flowclr" compare="sim_size"/>
     </test>
   </tests>
   <help><![CDATA[

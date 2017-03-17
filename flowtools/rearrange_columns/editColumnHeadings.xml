@@ -1,7 +1,7 @@
 <tool id="edit_rearrange_columns" name="Remove, rearrange and/or rename columns" version="1.1">
   <description>in txt-converted FCS files</description>
   <requirements>
-    <requirement type="package" version="1.0.0">ig-flowtools</requirement>
+    <requirement type="package" version="1.4.0">ig-flowtools</requirement>
   </requirements>
   <stdio>
     <exit_code range="2" level="fatal" description="Please provide a comma separated list of integers for columns you want to keep." />
@@ -9,7 +9,7 @@
     <exit_code range="4" level="fatal" description="List of column headings and list of selected columns must match. For instance for columns 1,3,4: Marker1,,Marker3." />
   </stdio>
   <command><![CDATA[
-	  editColumnHeadings.py -o '${output_file}' -i '${input}'
+      editColumnHeadings.py -o '${output_file}' -i '${input}'
   #if $columns
     -c '${columns}'
   #end if
@@ -19,7 +19,7 @@
   ]]>
   </command>
   <inputs>
-    <param format="flowtext" name="input" type="data" label="Text file"/>
+    <param format="flowtext,txt,tabular" name="input" type="data" label="Text file"/>
     <param name="columns" type="text" label="Column order:" value="i.e.:1,5,2" optional="true" help="By default, will keep all columns in the same order."/>
     <param name="colnames" type="text" label="New column headings:" value="i.e.:Marker1,,Marker4" optional="true" help="By default, will not change the column headings. Check below for more details.">
     </param>

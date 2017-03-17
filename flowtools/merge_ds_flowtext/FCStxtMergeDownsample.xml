@@ -1,9 +1,7 @@
 <tool id="fcstxt_merge_downsample" name="Downsample and merge" version="1.1">
   <description>txt-converted FCS files into one text file based on headers</description>
   <requirements>
-    <requirement type="package" version="1.10.2">numpy</requirement>
-    <requirement type="package" version="0.17.1">pandas</requirement>
-    <requirement type="package" version="1.0.0">ig-flowtools</requirement>
+    <requirement type="package" version="1.4.0">ig-flowtools</requirement>
   </requirements>
   <stdio>
     <exit_code range="2" level="fatal" description="Non-numeric data. See stderr for more details." />
@@ -25,7 +23,7 @@
   ]]>
   </command>
   <inputs>
-    <param format="flowtext" name="input" type="data_collection" collection_type="list" label="Text files Collection"/>
+    <param format="flowtext,txt,tabular" name="input" type="data_collection" collection_type="list" label="Text files Collection"/>
     <param name="factorDS" type="text" label="Downsample by:" value="i.e.:0.1 or 10%" optional="true" help="1 by default (no downsampling)."/>
     <param name="columns" type="text" label="Merge columns:" value="i.e.:1,2,5" optional="true" help="By default, will merge on the columns in common to all files.">
     </param>

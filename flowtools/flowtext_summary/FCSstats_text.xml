@@ -1,8 +1,7 @@
 <tool id="get_txt_fcs_stats" name="Get summary" version="1.0">
   <description>of txt-converted FCS files</description>
   <requirements>
-    <requirement type="package" version="0.17.1">pandas</requirement>
-    <requirement type="package" version="1.0.0">ig-flowtools</requirement>
+    <requirement type="package" version="1.4.0">ig-flowtools</requirement>
   </requirements>
   <stdio>
     <exit_code range="2:" level="fatal" description="See stderr for more details." />
@@ -12,7 +11,7 @@
   ]]>
   </command>
   <inputs>
-    <param format="flowtext" name="input" type="data" label="txt-converted FCS file"/>
+    <param format="flowtext,txt,tabular" name="input" type="data" label="txt-converted FCS file"/>
   </inputs>
   <outputs>
     <data format="tabular" name="output" label="Summary statisitics of ${input.name}"/>

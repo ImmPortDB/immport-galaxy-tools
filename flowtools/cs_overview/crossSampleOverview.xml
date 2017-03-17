@@ -1,8 +1,7 @@
 <tool id="cross_sample_overview" name="Generate overview information" version="1.0">
   <description>of the CrossSample analysis</description>
   <requirements>
-    <requirement type="package" version="2.8">jinja2</requirement>
-    <requirement type="package" version="1.0.0">ig-flowtools</requirement>
+    <requirement type="package" version="1.4.0">ig-flowtools</requirement>
   </requirements>
   <stdio>
     <exit_code range="1:" />
@@ -14,7 +13,7 @@
     cp `which crossSampleOverview.py`/../share/templates/* '$__tool_directory__/templates/'
     cp -r `which crossSampleOverview.py`/../share/static/flowtools/* ./static/flowtools/
     cp `which crossSampleOverview.py`/../share/static/images/flowtools/* ./static/images/flowtools/
-    crossSampleOverview.py -i '${input}' -I '${inputmfi}' -o '${html_file}' -m '${mfi}' -d '${html_file.files_path}' -t '$__tool_directory__/templates/'
+    crossSampleOverview.py -i '${input}' -I '${inputmfi}' -o '${html_file}' -m '${mfi}' -d '${html_file.files_path}' -t '$__tool_directory__/templates'
     #for $f in $cs_outputs
        -s $f
     #end for
