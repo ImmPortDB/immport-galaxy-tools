@@ -1,7 +1,7 @@
 <tool id="cross_sample_overview" name="Generate overview information" version="1.0">
   <description>of the CrossSample analysis</description>
   <requirements>
-    <requirement type="package" version="1.4.1">ig-flowtools</requirement>
+    <requirement type="package" version="1.5.0">ig-flowtools</requirement>
   </requirements>
   <stdio>
     <exit_code range="1:" />
@@ -10,9 +10,11 @@
     mkdir templates &&
     mkdir -p static/flowtools &&
     mkdir -p static/images/flowtools &&
-    cp `which crossSampleOverview.py`/../share/templates/* templates/ &&
-    cp -r `which crossSampleOverview.py`/../share/static/flowtools/* static/flowtools/ &&
-    cp `which crossSampleOverview.py`/../share/static/images/flowtools/* static/images/flowtools/ &&
+    FLOWTOOL=`which crossSampleOverview.py`
+    FLOWTOOLDIR=$(dirname ${FLOWTOOL})
+    cp $FLOWTOOLDIR/../share/templates/* templates/ &&
+    cp -r $FLOWTOOLDIR/../share/static/flowtools/* static/flowtools/ &&
+    cp $FLOWTOOLDIR/../share/static/images/flowtools/* static/images/flowtools/ &&
     crossSampleOverview.py -i '${input}' -I '${inputmfi}' -o '${html_file}' -m '${mfi}' -d '${html_file.files_path}' -t 'templates/'
     #for $f in $cs_outputs
        -s $f
