@@ -1,7 +1,7 @@
 <tool id="get_headers" name="Check headers" version="1.1">
   <description>of any set of flowtext files</description>
   <requirements>
-    <requirement type="package" version="2.0.1">ig-flowtools</requirement>
+    <requirement type="package" version="2.0.2">ig-flowtools</requirement>
   </requirements>
   <stdio>
     <exit_code range="1:" />
@@ -29,7 +29,7 @@
           <element name="input3.txt" value="input3.txt"/>
         </collection>
       </param>
-      <output name="output_file" file="output.tabular"/>
+      <output name="output_file" file="output.tabular" lines_diff="4"/>
     </test>
   </tests>
   <help><![CDATA[

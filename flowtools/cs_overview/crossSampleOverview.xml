@@ -1,7 +1,7 @@
 <tool id="cross_sample_overview" name="Generate overview information" version="1.1">
   <description>of a multi-sample analysis.</description>
   <requirements>
-    <requirement type="package" version="2.0.1">ig-flowtools</requirement>
+    <requirement type="package" version="2.0.2">ig-flowtools</requirement>
   </requirements>
   <stdio>
     <exit_code range="1" level="fatal" description="There are too many populations in the input files. The maximum number of populations is 40." />
@@ -11,8 +11,8 @@
     mkdir templates &&
     mkdir -p static/flowtools &&
     mkdir -p static/images/flowtools &&
-    FLOWTOOL=`which crossSampleOverview.py` &&
-    FLOWTOOLDIR=$(dirname ${FLOWTOOL}) &&
+    export FLOWTOOL='which crossSampleOverview.py' &&
+    FLOWTOOLDIR=\$(dirname $FLOWTOOL) &&
     cp $FLOWTOOLDIR/../share/templates/* templates/ &&
     cp -r $FLOWTOOLDIR/../share/static/flowtools/* static/flowtools/ &&
     cp $FLOWTOOLDIR/../share/static/images/flowtools/* static/images/flowtools/ &&
@@ -39,12 +39,12 @@
       <param name="mfi" value="input.mfi"/>
       <param name="cs_outputs">
         <collection type="list">
-          <element name="input1" value="input1.flowclr"/>
-          <element name="input2" value="input2.flowclr"/>
-          <element name="input3" value="input3.flowclr"/>
+          <element name="input1.flowclr" value="input1.flowclr"/>
+          <element name="input2.flowclr" value="input2.flowclr"/>
+          <element name="input3.flowclr" value="input3.flowclr"/>
         </collection>
       </param>
-      <output name="output_file" file="out.html" compare="contains">
+      <output name="output_file" file="out.html" compare="sim_size">
         <extra_files type="file" name="csAllMFIs.tsv" value="csAllMFIs.tsv"/>
         <extra_files type="file" name="csOverview.tsv" value="csOverview.tsv"/>
         <extra_files type="file" name="csBoxplotData.json" value="csBoxplotData.json" compare="contains"/>

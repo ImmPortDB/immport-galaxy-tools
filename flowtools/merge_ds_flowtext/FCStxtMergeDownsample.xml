@@ -1,7 +1,7 @@
 <tool id="fcstxt_merge_downsample" name="Merge and downsample" version="1.1">
   <description>txt-converted FCS files into one text file based on headers</description>
   <requirements>
-    <requirement type="package" version="2.0.1">ig-flowtools</requirement>
+    <requirement type="package" version="2.0.2">ig-flowtools</requirement>
   </requirements>
   <stdio>
     <exit_code range="2" level="fatal" description="Non-numeric data. See stderr for more details." />
@@ -42,7 +42,7 @@
       </param>
       <param name="factorDS" value=".8"/>
       <param name="columns" value="i.e.:1,2,5"/>
-      <output name="output_file" file="merge1.flowtext" compare="contains"/>
+      <output name="output_file" file="merge1.flowtext" compare="sim_size"/>
     </test>
     <test>
       <param name="input">
@@ -54,7 +54,7 @@
       </param>
       <param name="factorDS" value="i.e.:0.1 or 10%"/>
       <param name="columns" value="1,2,3"/>
-      <output name="output_file" file="merge2.flowtext" compare="contains"/>
+      <output name="output_file" file="merge2.flowtext" compare="sim_size"/>
     </test>
   </tests>
   <help><![CDATA[

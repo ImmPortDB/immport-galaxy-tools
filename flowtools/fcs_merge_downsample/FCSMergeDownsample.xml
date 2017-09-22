@@ -1,7 +1,7 @@
 <tool id="fcs_merge_downsample" name="Merge and downsample" version="1.0">
   <description>FCS files with FlowSOM</description>
   <requirements>
-    <requirement type="package" version="2.0.1">ig-flowtools</requirement>
+    <requirement type="package" version="2.0.2">ig-flowtools</requirement>
   </requirements>
   <stdio>
     <exit_code range="10" level="fatal" description="One or more FCS files is not valid. See stderr for more details." />
@@ -41,7 +41,7 @@
       </param>
       <param name="factorDS" value=".8"/>
       <param name="outformat" value="flowFrame"/>
-      <output name="output_file" file="merge1.flowframe" compare="contains"/>
+      <output name="output_file" file="merge1.flowframe" compare="sim_size" delta="1000000"/>
     </test>
     <test>
       <param name="input">
@@ -53,7 +53,7 @@
       </param>
       <param name="factorDS" value="i.e.:0.1 or 10%"/>
       <param name="outformat" value="FCS"/>
-      <output name="output_file" file="merge2.fcs" compare="contains"/>
+      <output name="output_file" file="merge2.fcs" compare="sim_size" delta="1000000"/>
     </test>
   </tests>
   <help><![CDATA[

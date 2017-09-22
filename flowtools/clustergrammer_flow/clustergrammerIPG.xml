@@ -1,7 +1,7 @@
 <tool id="clustergrammer_flow" name="Generate a heat map" version="1.0">
   <description>of a flow analysis using Clustergrammer</description>
   <requirements>
-    <requirement type="package" version="2.0.1">ig-flowtools</requirement>
+    <requirement type="package" version="2.0.2">ig-flowtools</requirement>
   </requirements>
   <stdio>
     <exit_code range="2" level="fatal" description="Please provide a comma-separated list of indices." />
@@ -12,8 +12,8 @@
   <command><![CDATA[
       mkdir templates &&
       mkdir -p static/flowtools &&
-      FLOWTOOL=`which clustergrammerIPG.py` &&
-      FLOWTOOLDIR=$(dirname ${FLOWTOOL}) &&
+      FLOWTOOL='which clustergrammerIPG.py' &&
+      FLOWTOOLDIR=\$(dirname $FLOWTOOL) &&
       cp $FLOWTOOLDIR/../share/templates/clus* templates/ &&
       cp -r $FLOWTOOLDIR/../share/static/flowtools/* static/flowtools/ &&
       clustergrammerIPG.py' '${input_matrix}' '${html_file}' '${html_file.files_path}' 'templates/'
