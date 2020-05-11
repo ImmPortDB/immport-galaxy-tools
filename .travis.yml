@@ -36,7 +36,7 @@ before_script:
 - pip install planemo
 
 script:
-- planemo lint -r --report_level error tools
+- planemo lint -r --report_level error flowtools
 
 notifications:
   email: false
