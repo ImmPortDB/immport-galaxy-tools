@@ -1,0 +1,13 @@
+owner: Cristel Thomas
+name: upload file
+description: upload files including those with fcs extension
+long_description: |
+    **Input**
+    One or more files
+    **Output**
+    Files loaded in history 
+    https://www.immportgalaxy.org
+categories:
+    - Flow Cytometry Analysis
+remote_repository_url: https://github.com/ImmPortDB/immport-galaxy-tools/tree/master/flowtools/upload_files/
+type: unrestricted
