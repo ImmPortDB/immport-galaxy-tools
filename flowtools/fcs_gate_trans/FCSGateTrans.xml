@@ -1,4 +1,4 @@
-<tool id="fcs_gate_trans_convert" name="Transform FCS data" version="1.2+galaxy0">
+<tool id="fcs_gate_trans_convert" name="Transform FCS data" version="1.2+galaxy1" profile="18.01">
   <description>with optional compensation and automated gating with flowDensity.</description>
   <requirements>
     <requirement type="package" version="1.10.0">bioconductor-flowdensity</requirement>
@@ -39,10 +39,7 @@
         </param>
       </when>
     </conditional>
-    <param name="gate" type="select" label="Automatically gate debris?">
-      <option value="FALSE">No, thank you</option>
-      <option value="TRUE">Yes, please</option>
-    </param>
+    <!-- The gate option is actually not in use in the command above -->
     <param name="gate" type="boolean" checked="false" truevalue="TRUE" falsevalue="FALSE" label="Automatically gate debris?"/>
     <param name="outformat" type="select" label="Output Format">
       <option value="flowtext">Text File</option>
