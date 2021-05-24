@@ -1,0 +1,242 @@
+<tool id="autospill" name="Autospill" version="0.1.0+galaxy0" profile="19.01" python_template_version="3.5">
+    <description>
+      calculates spillover coefficients with robust linear models and then refines spillover coefficients iteratively
+    </description>
+    <requirements>
+      <requirement type="package" version="0.1.0">r-autospill</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+      mkdir input_dir;
+      #for $fcs in $fcs_list:
+        ln -s '$fcs' input_dir/'$fcs.element_identifier';
+      #end for
+
+      ## TODO Check that tabular file has the same number of lines that the collection of fcs files.
+      ## Check that files given in the tabular file exist in the inputs directory.
+
+      Rscript '$auto_spill_calculate_compensate' input_dir '$fcs_metadata' \${GALAXY_SLOTS:-1};
+
+      #if $get_figure_scatter:
+      mkdir all_scatter;
+      for suffix in \$(ls | grep figure_scatter | sed 's/figure_scatter_//'); do
+        for plot in \$(ls figure_scatter_\$suffix); do
+          mv figure_scatter_\$suffix/\$plot all_scatter/\${suffix}__\${plot};
+        done;
+      done;
+      #end if
+      ]]></command>
+     <configfiles>
+      <configfile name="auto_spill_calculate_compensate"><![CDATA[
+## calculate_compensation_paper.r
+##
+## Copyright (c) 2020 VIB (Belgium) and Babraham Institute (United Kingdom)
+##
+## Software written by Carlos P. Roca, as research funded by the European Union.
+##
+## This software may be modified and distributed under the terms of the MIT
+## license. See the LICENSE file for details.
+## Runs a calculation of compensation with autospill, creating all figures and
+## tables used in autospill paper.
+##
+## Requires being called as a batch script with the following two arguments:
+##     control.dir    directory with the set of single-color controls
+##     control.def.file    csv file defining the names and channels of the
+##         single-color controls
+
+
+library( autospill )
+
+
+## get directory and csv file with definition of control dataset
+
+args <- commandArgs( TRUE )
+
+if ( length( args ) != 3 ) {
+    cat( "ERROR: no arguments with directory, csv file with definition of control dataset and parameter set",
+        file = stderr() )
+    stop()
+}
+
+
+control.dir <- args[[ 1 ]]
+control.def.file <- args[[ 2 ]]
+
+asp <- get.autospill.param()
+
+#if $get_figure_scatter or $get_gates:
+## Reduced resolution of plots
+asp\$figure.width <- 3.25
+asp\$figure.height <- 2.60
+asp\$figure.margin <- 1.0
+
+asp\$figure.panel.line.size <- 0.5
+
+asp\$figure.axis.text.size <- 7.0
+asp\$figure.axis.title.size <- 7.0
+
+asp\$figure.convergence.point.size <- 1.0
+asp\$figure.convergence.line.size <- 0.4
+
+asp\$figure.density.line.size <- 0.4
+
+asp\$figure.gate.scale.expand <- 0.01
+asp\$figure.gate.point.size <- 0.4
+asp\$figure.gate.line.size <- 0.3
+asp\$figure.gate.bar.width <- 0.3
+asp\$figure.gate.bar.height <- 10.0
+asp\$figure.gate.bar.margin <- 0.0
+
+asp\$figure.matrix.point.size <- 1.2
+asp\$figure.matrix.line.size <- 0.4
+
+asp\$figure.scatter.alpha.gate.in <- 0.8
+asp\$figure.scatter.alpha.gate.out <- 0.2
+asp\$figure.scatter.point.size <- 0.6
+asp\$figure.scatter.line.size <- 0.5
+asp\$figure.scatter.error.label.size <- 3.0
+asp\$figure.scatter.error.label.pos.x <- 0.85
+asp\$figure.scatter.error.label.pos.y <- 0.05
+asp\$figure.scatter.axis.text.size <- 9.0
+asp\$figure.scatter.axis.title.size <- 9.0
+## Reduced resolution
+#end if
+
+#if $get_figure_scatter:
+## triggers generation of compensation plots between pair of channels
+asp\$figure.scatter.dir.base <- "figure_scatter"
+#end if
+
+#if $get_gates:
+## triggers generation of gate figures
+asp\$figure.gate.dir <- "figure_gate"
+#end if
+
+## triggers generation of a figure with a summary of convergence
+asp\$figure.convergence.dir <- "figure_convergence"
+asp\$table.spillover.dir <- "table_spillover"
+
+## Set workers through GALAXY_SLOTS
+asp\$worker.process.n<-args[[3]]
+
+flow.control <- read.flow.control( control.dir, control.def.file, asp )
+
+## gate events before calculating spillover
+
+flow.gate <- gate.flow.data( flow.control, asp )
+
+
+## get initial spillover matrices from untransformed data
+
+marker.spillover.unco.untr <- get.marker.spillover( TRUE, flow.gate,
+  flow.control, asp )
+#if $get_figure_scatter:
+marker.spillover.unco.tran <- get.marker.spillover( FALSE, flow.gate,
+  flow.control, asp )
+#else:
+marker.spillover.unco.tran <- NULL
+#end if
+
+
+## refine spillover matrix iteratively
+
+refine.spillover.result <- refine.spillover( marker.spillover.unco.untr,
+  marker.spillover.unco.tran, flow.gate, flow.control, asp )
+
+## Write outputs
+write.table(refine.spillover.result\$spillover, file = "spillover.txt", sep="\t", col.names = NA, quote=FALSE)
+write.table(refine.spillover.result\$compensation, file = "compensation.txt", sep="\t", col.names = NA, quote=FALSE)
+write.table(refine.spillover.result\$convergence, file = "convergence.txt", sep="\t", row.names=FALSE, quote=FALSE)
+
+#if $get_error:
+write.table(refine.spillover.result\$error\$inte, file = "error_inte.txt", sep="\t", col.names=NA, quote=FALSE)
+write.table(refine.spillover.result\$error\$coef, file = "error_coef.txt", sep="\t", col.names=NA, quote=FALSE)
+write.table(refine.spillover.result\$error\$slop, file = "error_slop.txt", sep="\t", col.names=NA, quote=FALSE)
+write.table(refine.spillover.result\$error\$skew, file = "error_skew.txt", sep="\t", col.names=NA, quote=FALSE)
+#end if
+
+            ]]></configfile>
+    </configfiles>
+
+     <inputs>
+        <param type="data" name="fcs_list" format="fcs" multiple="true" label="Collection of control FCS files" />
+        <param type="data" name="fcs_metadata" format="csv" label="Auxiliary control file" help="Contains metadata for control list. It has to match original names of FCS files uploaded, and those files need to be present in the Collection of control FCS files given." />
+        <!-- <param name="param_set" type="select" label="Parameter set" help="Predefined auto-spill parameters set, choose from 'Minimal', 'Final step', 'Paper', or 'Website'">
+          <option value="minimal" selected="true">Minimal - no plot generation</option>
+          <option value="final.step">Final step - plot generation</option>
+          <option value="paper">Paper</option>
+          <option value="website">Website</option>
+        </param> -->
+        <param type="boolean" name="get_figure_scatter" label="Get scatter" help="If turned On, the tool will produce scatter plots between setups" checked="true"/>
+        <param type="boolean" name="get_error" label="Get error matrices/tables" help="If turned On, the tool will produce error matrices for intercepts, coefficients, slope and skewness" checked="false"/>
+        <param type="boolean" name="get_gates" label="Get gating information" help="If turned On, gating parameters information will be produced" checked="true"/>
+    </inputs>
+    <outputs>
+      <data name="spillover_matrix" format="tabular" from_work_dir="spillover.txt" label="${tool.name} spillover matrix on ${on_string}"/>
+      <data name="compensation_matrix" format="tabular" from_work_dir="compensation.txt" label="${tool.name} compensation matrix on ${on_string}"/>
+      <data name="convergence_matrix" format="tabular" from_work_dir="convergence.txt" label="${tool.name} convergence table on ${on_string}"/>
+      <data name="convergence_plot" format="png" from_work_dir="figure_convergence/autospill_convergence.png" label="${tool.name} convergence plot on ${on_string}"/>
+      <data name="error_inte_matrix" format="tabular" from_work_dir="error_inte.txt" label="${tool.name} error intercepts matrix on ${on_string}">
+        <filter>get_error</filter>
+      </data>
+      <data name="error_coef_matrix" format="tabular" from_work_dir="error_coef.txt" label="${tool.name} error coefficients matrix on ${on_string}">
+        <filter>get_error</filter>
+      </data>
+      <data name="error_slop_matrix" format="tabular" from_work_dir="error_slop.txt" label="${tool.name} error slope matrix on ${on_string}">
+        <filter>get_error</filter>
+      </data>
+      <data name="error_skew_matrix" format="tabular" from_work_dir="error_skew.txt" label="${tool.name} error skewness matrix on ${on_string}">
+        <filter>get_error</filter>
+      </data>
+      <!--
+      <collection name="spillover_plots" label="${tool.name} spillover plots on ${on_string}">
+        <discover_datasets pattern="__designation_and_ext__" format="png" directory="figure_spillover" visible="true" />
+      </collection> -->
+      <collection name="gate_plots" label="${tool.name} gate plots on ${on_string}" type="list">
+        <discover_datasets pattern="__designation_and_ext__" format="png" directory="figure_gate" />
+        <filter>get_gates</filter>
+      </collection>
+      <collection name="scatter_plots" label="${tool.name} scatter plots on ${on_string}" type="list">
+        <discover_datasets pattern="__designation_and_ext__" format="png" directory="all_scatter" />
+        <filter>get_figure_scatter</filter>
+      </collection>
+
+      <!--
+      <collection name="compensation_plots" label="${tool.name} compensation plots on ${on_string}">
+        <discover_datasets pattern="__designation_and_ext__" format="png" directory="figure_compensation" visible="true" />
+      </collection> -->
+    </outputs>
+    <help><![CDATA[
+Autospill: a principled framework that simplifies the analysis of multichromatic flow cytometry data
+----------------------------------------------------------------------------------------------------
+
+Calculates spillover coefficients with robust linear models and then refines spillover coefficients iteratively.
+
+**Inputs**
+
+- Collection of control FCS files
+- Auxiliary control file: Contains metadata for control list. It has to match original names of FCS files uploaded, and those files need to be present in the Collection of control FCS files given. ​
+
+
+**Output**
+
+- Spillover matrix
+- Compensation matrix
+- convergence matrix
+- convergence plot
+- Gate plots
+- Scatter plots between channels
+
+    ]]></help>
+    <citations>
+        <citation type="bibtex">
+@misc{githubautospill,
+  author = {Roca, Carlos},
+  year = {2020},
+  title = {autospill algorithm for calculating spillover coefficients, used to compensate or unmix flow cytometry data.},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  url = {https://github.com/carlosproca/autospill},
+  }</citation>
+    <citation type="doi">10.1038/s41467-021-23126-8</citation>
+    </citations>
+</tool>
