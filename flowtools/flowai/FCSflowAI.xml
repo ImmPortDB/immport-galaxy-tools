@@ -1,8 +1,9 @@
-<tool id="flowAI" name="flowAI" version="1.0+galaxy1">
+<tool id="flowAI" name="flowAI" version="1.0+galaxy2">
   <description> automatic quality control</description>
   <requirements>
     <requirement type="package" version="1.42.0">bioconductor-flowcore</requirement>
     <requirement type="package" version="1.2.9">bioconductor-flowai</requirement>
+    <requirement type="package" version="0.0.1">mscorefonts</requirement>
   </requirements>
   <stdio>
     <exit_code range="1:" level="fatal" description="See stderr for more details."/>
