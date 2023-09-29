@@ -1,7 +1,8 @@
-<tool id="flowsom_cross_comp" name="Map individual FCS to reference SOM" version="1.0+galaxy1">
+<tool id="flowsom_cross_comp" name="Map individual FCS to reference SOM" version="1.0+galaxy2">
   <description>using FlowSOM.</description>
   <requirements>
     <requirement type="package" version="1.16.0">bioconductor-flowsom</requirement>
+    <requirement type="package" version="0.0.1">mscorefonts</requirement>
   </requirements>
   <stdio>
     <exit_code range="10" level="fatal" description="Please provide valid input files (FCS or flowFrame)."/>

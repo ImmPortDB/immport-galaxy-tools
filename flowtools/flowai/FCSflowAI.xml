@@ -1,8 +1,9 @@
-<tool id="flowAI" name="flowAI" version="1.0+galaxy1">
+<tool id="flowAI" name="flowAI" version="1.0+galaxy2">
   <description> automatic quality control</description>
   <requirements>
     <requirement type="package" version="1.42.0">bioconductor-flowcore</requirement>
     <requirement type="package" version="1.2.9">bioconductor-flowai</requirement>
+    <requirement type="package" version="0.0.1">mscorefonts</requirement>
   </requirements>
   <stdio>
     <exit_code range="1:" level="fatal" description="See stderr for more details."/>
@@ -76,7 +77,7 @@
           <has_text text="data:image/png;base64"/>
           <has_text text="Dynamic range check"/>
           <has_text text="total_UNIQUE"/>
-          <has_size value="267939" delta="30000"/>
+          <has_size value="320266" delta="30000"/>
         </assert_contents>
       </output>
       <output name="highfcs" file="std/hqdata.fcs" compare="sim_size"/>
@@ -98,7 +99,7 @@
           <has_text text="data:image/png;base64"/>
           <has_text text="Dynamic range check"/>
           <has_text text="total_UNIQUE"/>
-          <has_size value="267939" delta="30000"/>
+          <has_size value="320266" delta="30000"/>
         </assert_contents>
       </output>
       <output name="highfcs" file="std/hqdata.fcs" compare="sim_size"/>
@@ -121,7 +122,7 @@
           <has_n_lines min="100" max="500"/>
           <has_text text="data:image/png;base64"/>
           <has_text text="Dynamic range check"/>
-          <has_size value="268106" delta="30000"/>
+          <has_size value="320433" delta="30000"/>
         </assert_contents>
       </output>
       <output name="highfcs" file="nooutliers/hqdata_nooutliers.fcs" compare="sim_size"/>
@@ -143,7 +144,7 @@
           <has_text text="data:image/png;base64"/>
           <has_text text="Dynamic range check"/>
           <has_text text="total_UNIQUE"/>
-          <has_size value="267894" delta="30000"/>
+          <has_size value="320220" delta="30000"/>
         </assert_contents>
       </output>
       <output name="highfcs" file="withsfsc/hqdata_sfsc.fcs" compare="sim_size"/>
