@@ -10,15 +10,17 @@
 # and upper limit on nb of cluster to look at
 
 from __future__ import print_function
-import sys
-import os
-import logging
+
 import fileinput
-import pandas as pd
+import logging
+import os
+import sys
 from argparse import ArgumentParser
-from jinja2 import Environment, FileSystemLoader
-from shutil import copyfile
 from collections import defaultdict
+from shutil import copyfile
+
+import pandas as pd
+from jinja2 import Environment, FileSystemLoader
 
 
 def check_pops(mfi_file, stat1):
@@ -26,29 +28,37 @@ def check_pops(mfi_file, stat1):
     df1 = pd.read_table(stat1)
     nb_pop = len(set(df.Population))
     nb_pop1 = len(df1.columns) - 2
-    if (nb_pop > 40):
+    if nb_pop > 40:
         sys.stderr.write("There are " + str(nb_pop) + " in the input file.")
         sys.exit(1)
-    if (nb_pop != nb_pop1):
+    if nb_pop != nb_pop1:
+        sys.stderr.write(
+            "There are "
+            + str(nb_pop)
+            + " populations in the mfi file and "
+            + str(nb_pop1)
+            + " populations in the stat1 file. Please address and re-run."
+        )
         sys.exit(2)
 
 
 def panel_to_json_string(df):
     # from http://stackoverflow.com/questions/28078118/merge-many-json-strings-with-python-pandas-inputs
     def __merge_stream(key, stream):
-        return '"' + key + '"' + ': ' + stream + ', '
+        return '"' + key + '"' + ": " + stream + ", "
+
     try:
-        if 'Unnamed: 0' in df.columns:
-            df = df.drop(['Unnamed: 0'], axis=1)
-        stream = '{'
+        if "Unnamed: 0" in df.columns:
+            df = df.drop(["Unnamed: 0"], axis=1)
+        stream = "{"
         for index, subdf in df.groupby(level=0):
             stream += __merge_stream(index, df.loc[index, :, :].droplevel(0).to_json())
         # take out extra last comma
         stream = stream[:-2]
         # add the final paren
-        stream += '}'
+        stream += "}"
     except:
-        logging.exception('Panel Encoding did not work')
+        logging.exception("Panel Encoding did not work")
     return stream
 
 
@@ -57,8 +67,11 @@ def get_outliers(group, upper, lower):
     out = {}
     for marker in group:
         # skip population since upper and lower don't contain it, since it was made after a group by Population
-        if marker != 'Population':
-            out[marker] = group[(group[marker] > upper.loc[cat][marker]) | (group[marker] < lower.loc[cat][marker])][marker]
+        if marker != "Population":
+            out[marker] = group[
+                (group[marker] > upper.loc[cat][marker])
+                | (group[marker] < lower.loc[cat][marker])
+            ][marker]
     return out
 
 
@@ -66,13 +79,13 @@ def get_boxplot_stats(all_data, mfi_file, output_json):
     # modified code from http://bokeh.pydata.org/en/latest/docs/gallery/boxplot.html
     # Get initial MFI values
     mfi = pd.read_table(mfi_file)
-    mfi = mfi.set_index('Population')
+    mfi = mfi.set_index("Population")
 
     df = pd.read_table(all_data)
     # check if ever some pops not in cs_files
     missing_pop = [x for x in mfi.index if x not in set(df.Population)]
 
-    if (missing_pop):
+    if missing_pop:
         zeros = {}
         for m in df.columns:
             zeros[m] = [0 for x in missing_pop]
@@ -80,34 +93,39 @@ def get_boxplot_stats(all_data, mfi_file, output_json):
         tmpdf.Population = missing_pop
         df = df.append(tmpdf)
 
-    pops = df.groupby('Population')
+    pops = df.groupby("Population")
     q1 = pops.quantile(q=0.25)
     q2 = pops.quantile(q=0.5)
     q3 = pops.quantile(q=0.75)
     iqr = q3 - q1
-    upper = q3 + 1.5*iqr
-    lower = q1 - 1.5*iqr
+    upper = q3 + 1.5 * iqr
+    lower = q1 - 1.5 * iqr
     resampled = False
     # get outliers
     out = pops.apply(get_outliers, upper, lower).dropna()
     outliers = defaultdict(dict)
     for population in set(df.Population):
         for marker in df.columns:
-            if marker != 'Population':
+            if marker != "Population":
                 tmp_outliers = list(out[population][marker])
-                if (len(list(out[population][marker])) > 100):
+                if len(list(out[population][marker])) > 100:
                     tmp_outliers = list(out[population][marker].sample(n=100))
                     resampled = True
                 outliers[population][marker] = tmp_outliers
     outdf = pd.DataFrame(outliers)
 
-    data = pd.concat({'q1': q1,
-            'q2': q2,
-            'q3': q3,
-            'upper': upper,
-            'lower': lower,
-            'outliers': outdf.T,
-            'mfi': mfi}, keys=['q1','q2','q3','upper','lower','outliers','mfi'])
+    data = pd.concat(
+        {
+            "q1": q1,
+            "q2": q2,
+            "q3": q3,
+            "upper": upper,
+            "lower": lower,
+            "outliers": outdf.T,
+            "mfi": mfi,
+        },
+        keys=["q1", "q2", "q3", "upper", "lower", "outliers", "mfi"],
+    )
 
     with open(output_json, "w") as js_all:
         js_all.write(panel_to_json_string(data))
@@ -115,14 +133,16 @@ def get_boxplot_stats(all_data, mfi_file, output_json):
     return resampled
 
 
-def cs_overview(input_file, input_mfi, init_mfi, output_file, output_dir, tools_dir, cs_files):
+def cs_overview(
+    input_file, input_mfi, init_mfi, output_file, output_dir, tools_dir, cs_files
+):
     os.mkdir(output_dir)
 
     env = Environment(loader=FileSystemLoader(tools_dir + "/templates"))
     template = env.get_template("csOverview.template")
 
     real_directory = output_dir.replace("/job_working_directory", "")
-    context = {'outputDirectory': real_directory}
+    context = {"outputDirectory": real_directory}
     overview = template.render(**context)
     with open(output_file, "w") as outf:
         outf.write(overview)
@@ -151,7 +171,7 @@ def cs_overview(input_file, input_mfi, init_mfi, output_file, output_dir, tools_
         ## yay python 2.7
         ro = fileinput.input(output_file, inplace=True, backup=".bak")
         for roline in ro:
-            print(roline.replace(to_find, to_replace), end='')
+            print(roline.replace(to_find, to_replace), end="")
         ro.close()
 
     return
@@ -159,54 +179,67 @@ def cs_overview(input_file, input_mfi, init_mfi, output_file, output_dir, tools_
 
 if __name__ == "__main__":
     parser = ArgumentParser(
-             prog="csOverview",
-             description="Generate an overview plot of crossSample results.")
+        prog="csOverview",
+        description="Generate an overview plot of crossSample results.",
+    )
 
     parser.add_argument(
-            '-i',
-            dest="input_file",
-            required=True,
-            help="File location for the summary statistics from CrossSample.")
+        "-i",
+        dest="input_file",
+        required=True,
+        help="File location for the summary statistics from CrossSample.",
+    )
 
     parser.add_argument(
-            '-I',
-            dest="input_mfi",
-            required=True,
-            help="File location for the MFI summary statistics from CrossSample.")
+        "-I",
+        dest="input_mfi",
+        required=True,
+        help="File location for the MFI summary statistics from CrossSample.",
+    )
 
     parser.add_argument(
-            '-s',
-            dest="cs_outputs",
-            required=True,
-            action='append',
-            help="File location for the CrossSample output files.")
+        "-s",
+        dest="cs_outputs",
+        required=True,
+        action="append",
+        help="File location for the CrossSample output files.",
+    )
 
     parser.add_argument(
-            '-o',
-            dest="output_file",
-            required=True,
-            help="File location for the HTML output file.")
+        "-o",
+        dest="output_file",
+        required=True,
+        help="File location for the HTML output file.",
+    )
 
     parser.add_argument(
-            '-m',
-            dest="mfi",
-            required=True,
-            help="File location for the MFI from FLOCK.")
+        "-m", dest="mfi", required=True, help="File location for the MFI from FLOCK."
+    )
 
     parser.add_argument(
-            '-d',
-            dest="output_directory",
-            required=True,
-            help="Directory location for the html supporting files.")
+        "-d",
+        dest="output_directory",
+        required=True,
+        help="Directory location for the html supporting files.",
+    )
 
     parser.add_argument(
-            '-t',
-            dest="tool_directory",
-            required=True,
-            help="Location of the Tool Directory.")
+        "-t",
+        dest="tool_directory",
+        required=True,
+        help="Location of the Tool Directory.",
+    )
 
     args = parser.parse_args()
 
     cs_files = [f for f in args.cs_outputs]
     check_pops(args.mfi, args.input_file)
-    cs_overview(args.input_file, args.input_mfi, args.mfi, args.output_file, args.output_directory, args.tool_directory, cs_files)
+    cs_overview(
+        args.input_file,
+        args.input_mfi,
+        args.mfi,
+        args.output_file,
+        args.output_directory,
+        args.tool_directory,
+        cs_files,
+    )
