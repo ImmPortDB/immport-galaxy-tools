@@ -1,17 +1,18 @@
-<tool id="flowsom_cross_comp" name="Map individual FCS to reference SOM" version="1.0">
+<tool id="flowsom_cross_comp" name="Map individual FCS to reference SOM" version="1.0+galaxy2">
   <description>using FlowSOM.</description>
   <requirements>
-    <requirement type="package" version="2.0.2">ig-flowtools</requirement>
+    <requirement type="package" version="1.16.0">bioconductor-flowsom</requirement>
+    <requirement type="package" version="0.0.1">mscorefonts</requirement>
   </requirements>
   <stdio>
-    <exit_code range="10" level="fatal" description="Please provide valid input files (FCS or flowFrame)." />
-    <exit_code range="11" level="fatal" description="Please provide a valid reference SOM tree." />
-    <exit_code range="12" level="fatal" description="Input files should all be in the same format." />
-    <exit_code range="13" level="fatal" description="There are inconsistencies in marker names between FCS files." />
-    <exit_code range="14" level="fatal" description="FCS file and reference tree markers are inconsistent." />
+    <exit_code range="10" level="fatal" description="Please provide valid input files (FCS or flowFrame)."/>
+    <exit_code range="11" level="fatal" description="Please provide a valid reference SOM tree."/>
+    <exit_code range="12" level="fatal" description="Input files should all be in the same format."/>
+    <exit_code range="13" level="fatal" description="There are inconsistencies in marker names between FCS files."/>
+    <exit_code range="14" level="fatal" description="FCS file and reference tree markers are inconsistent."/>
   </stdio>
   <command><![CDATA[
-    FlowSOMMApIndividualFCS.R '${reftree}' 'newDataOutput' '${cluster}' '${tablecontent}' '${mfi}' '${stats}' '${mfistats}' '${allstats}'
+  Rscript $__tool_directory__/FlowSOMMApIndividualFCS.R '${reftree}' 'newDataOutput' '${cluster}' '${tablecontent}' '${mfi}' '${stats}' '${mfistats}' '${allstats}'
   #if $plot == "TRUE"
     'newDataTrees'
   #end if
@@ -30,9 +31,9 @@
       <option value="FlowSOM">FlowSOM Clusters</option>
       <option value="meta">Meta-Clusters</option>
     </param>
-    <param name="cluster" type="integer" value="10" optional="true" label="Number of expected metaclusters" help="By default, the number of expected metaclusters is set to 10" />
-    <param name="plot" type="boolean" label="Plot SOM Tree?" checked="false" truevalue="TRUE" falsevalue="FALSE" />
-    <param name="mplot" type="boolean" label="Plot individual marker trees?" checked="false" truevalue="TRUE" falsevalue="FALSE" />
+    <param name="cluster" type="integer" value="10" optional="true" label="Number of expected metaclusters" help="By default, the number of expected metaclusters is set to 10"/>
+    <param name="plot" type="boolean" label="Plot SOM Tree?" checked="false" truevalue="TRUE" falsevalue="FALSE"/>
+    <param name="mplot" type="boolean" label="Plot individual marker trees?" checked="false" truevalue="TRUE" falsevalue="FALSE"/>
     <param name="mfi" type="select" label="Calculate centroids using:">
       <option value="mfi" selected="true">Mean Fluorescence Intensity</option>
       <option value="mdfi">Median Fluorescence Intensity</option>
@@ -41,17 +42,17 @@
   </inputs>
   <outputs>
     <collection type="list" label="Mapping of ${input.name} to ${reftree.name}" name="output">
-      <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="newDataOutput" format="flowclr" />
+      <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="newDataOutput" format="flowclr"/>
     </collection>
     <data format="flowstat1" name="stats" label="${tablecontent} cluster distribution in ${input.name}"/>
     <data format="flowstat2" name="mfistats" label="${tablecontent} cluster ${mfi} centroids in ${input.name}"/>
     <data format="flowstat3" name="allstats" label="${tablecontent} cluster descriptive stats of ${input.name}"/>
     <collection type="list" label="Tree representations of mapping ${input.name} to ${reftree.name}" name="trees">
-      <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="newDataTrees" format="png" />
+      <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="newDataTrees" format="png"/>
       <filter>(plot)</filter>
     </collection>
     <collection type="list" label="Marker trees from mapping ${input.name} to ${reftree.name}" name="mtrees">
-      <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="newDataMarkers" format="pdf" />
+      <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="newDataMarkers" format="pdf"/>
       <filter>(mplot)</filter>
     </collection>
   </outputs>
@@ -70,13 +71,13 @@
       <param name="plot" value="FALSE"/>
       <param name="mplot" value="FALSE"/>
       <param name="mfi" value="mfi"/>
-      <output name="stats" file="out1.flowstat1"  compare="sim_size"/>
+      <output name="stats" file="out1.flowstat1" compare="sim_size"/>
       <output name="mfistats" file="out1.flowstat2" compare="sim_size"/>
       <output name="allstats" file="out1.flowstat3" compare="sim_size"/>
       <output_collection name="output" type="list" count="3">
-        <element name="input1.flowclr" file="run1/input1.flowclr" compare="sim_size"/>
-        <element name="input2.flowclr" file="run1/input2.flowclr" compare="sim_size"/>
-        <element name="input3.flowclr" file="run1/input3.flowclr" compare="sim_size"/>
+        <element name="input1.flowframe_clustered.flowclr" file="run1/input1.flowclr" compare="sim_size"/>
+        <element name="input2.flowframe_clustered.flowclr" file="run1/input2.flowclr" compare="sim_size"/>
+        <element name="input3.flowframe_clustered.flowclr" file="run1/input3.flowclr" compare="sim_size"/>
       </output_collection>
     </test>
     <test>
@@ -97,26 +98,27 @@
       <output name="mfistats" file="out2.flowstat2" compare="sim_size"/>
       <output name="allstats" file="out2.flowstat3" compare="sim_size"/>
       <output_collection name="output" type="list" count="3">
-        <element name="input1.flowclr" file="run2/input1.flowclr" compare="sim_size"/>
-        <element name="input2.flowclr" file="run2/input2.flowclr" compare="sim_size"/>
-        <element name="input3.flowclr" file="run2/input3.flowclr" compare="sim_size"/>
+        <element name="input1.fcs_clustered.flowclr" file="run2/input1.flowclr" compare="sim_size"/>
+        <element name="input2.fcs_clustered.flowclr" file="run2/input2.flowclr" compare="sim_size"/>
+        <element name="input3.fcs_clustered.flowclr" file="run2/input3.flowclr" compare="sim_size"/>
       </output_collection>
       <output_collection name="trees" type="list" count="3">
-        <element name="input1.png" file="run2/input1.png" compare="sim_size"/>
-        <element name="input2.png" file="run2/input2.png" compare="sim_size"/>
-        <element name="input3.png" file="run2/input3.png" compare="sim_size"/>
+        <element name="input1.fcs_tree.png" file="run2/input1.png" compare="sim_size"/>
+        <element name="input2.fcs_tree.png" file="run2/input2.png" compare="sim_size"/>
+        <element name="input3.fcs_tree.png" file="run2/input3.png" compare="sim_size"/>
       </output_collection>
       <output_collection name="mtrees" type="list" count="3">
-        <element name="input1.pdf" file="run2/input1.pdf" compare="sim_size" delta="100000"/>
-        <element name="input2.pdf" file="run2/input2.pdf" compare="sim_size" delta="100000"/>
-        <element name="input3.pdf" file="run2/input3.pdf" compare="sim_size" delta="100000"/>
+        <element name="input1.fcs_marker_plots.pdf" file="run2/input1.pdf" compare="sim_size" delta="100000"/>
+        <element name="input2.fcs_marker_plots.pdf" file="run2/input2.pdf" compare="sim_size" delta="100000"/>
+        <element name="input3.fcs_marker_plots.pdf" file="run2/input3.pdf" compare="sim_size" delta="100000"/>
       </output_collection>
     </test>
   </tests>
   <help><![CDATA[
-   This tool uses FlowSOM to compare individual FCS or flowframes to a SOM reference tree.
+Map fcs samples to SOM
+-------------------
 
------
+   This tool uses FlowSOM to compare individual FCS or flowframes to a SOM reference tree.
 
 **Input**
 

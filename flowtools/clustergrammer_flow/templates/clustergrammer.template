@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<title>Clustergrammer</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<link rel="stylesheet" href="js/bootstrap/css/bootstrap.css"/>
+<link rel="stylesheet" href="css/clustergrammer_custom.css"/>
+<link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css"/>
+
+<script src="js/d3.min.js" type="text/javascript"></script>
+<script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script src="js/underscore-min.js" type="text/javascript"></script>
+<script src="js/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+<div id='container-id-1'>
+    <h1 class='wait_message'>Please wait ...</h1>
+</div>
+
+<script src="js/clustergrammerIPG.js" type="text/javascript"></script>
+<script src="js/load_clustergramIPG.js" type="text/javascript"></script>
+
+
+</body>
+</html>

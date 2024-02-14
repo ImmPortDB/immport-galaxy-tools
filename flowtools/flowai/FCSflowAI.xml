@@ -1,13 +1,25 @@
-<tool id="flowAI" name="flowAI" version="1.0">
+<tool id="flowAI" name="flowAI" version="1.0+galaxy2">
   <description> automatic quality control</description>
   <requirements>
-    <requirement type="package" version="2.0.2">ig-flowtools</requirement>
+    <requirement type="package" version="1.42.0">bioconductor-flowcore</requirement>
+    <requirement type="package" version="1.2.9">bioconductor-flowai</requirement>
+    <requirement type="package" version="0.0.1">mscorefonts</requirement>
   </requirements>
   <stdio>
-    <exit_code range="2:" level="fatal" description="See stderr for more details." />
+    <exit_code range="1:" level="fatal" description="See stderr for more details."/>
   </stdio>
   <command><![CDATA[
-      FCSflowAI.R '${input}' '${remove}' $alphaFR $chremFS $outFS $penFS '${sideFM}' '${full_rep}' $highfcs $lowfcs $qcfcs
+      Rscript $__tool_directory__/FCSflowAI.R '${input}' '${remove}' $alphaFR $chremFS $outFS $penFS '${sideFM}' report.html high.fcs low.fcs qc.fcs &&
+      cp report.html $full_rep
+      #if $highQ_FCS:
+        && cp high.fcs $highfcs
+      #end if
+      #if $lowQ_FCS:
+        && cp low.fcs $lowfcs
+      #end if
+      #if $QC_FCS:
+        && cp qc.fcs $qcfcs
+      #end if
   ]]>
   </command>
   <inputs>
@@ -48,7 +60,7 @@
     </data>
   </outputs>
   <tests>
-    <test>
+    <test expect_num_outputs="2">
       <param name="input" value="input.fcs"/>
       <param name="remove" value="all"/>
       <param name="alphaFR" value="0.01"/>
@@ -59,10 +71,18 @@
       <param name="highQ_FCS" value="TRUE"/>
       <param name="lowQ_FCS" value="FALSE"/>
       <param name="QC_FCS" value="FALSE"/>
-      <output name="full_rep" file="std/QCreport.html" lines_diff="2"/>
+      <output name="full_rep">
+        <assert_contents>
+          <has_n_lines min="100" max="500"/>
+          <has_text text="data:image/png;base64"/>
+          <has_text text="Dynamic range check"/>
+          <has_text text="total_UNIQUE"/>
+          <has_size value="320266" delta="30000"/>
+        </assert_contents>
+      </output>
       <output name="highfcs" file="std/hqdata.fcs" compare="sim_size"/>
     </test>
-    <test>
+    <test expect_num_outputs="4">
       <param name="input" value="input.fcs"/>
       <param name="remove" value="all"/>
       <param name="alphaFR" value="0.01"/>
@@ -73,12 +93,20 @@
       <param name="highQ_FCS" value="TRUE"/>
       <param name="lowQ_FCS" value="TRUE"/>
       <param name="QC_FCS" value="TRUE"/>
-      <output name="full_rep" file="std/QCreport.html" lines_diff="2"/>
+      <output name="full_rep">
+        <assert_contents>
+          <has_n_lines min="100" max="500"/>
+          <has_text text="data:image/png;base64"/>
+          <has_text text="Dynamic range check"/>
+          <has_text text="total_UNIQUE"/>
+          <has_size value="320266" delta="30000"/>
+        </assert_contents>
+      </output>
       <output name="highfcs" file="std/hqdata.fcs" compare="sim_size"/>
       <output name="lowfcs" file="std/lqdata.fcs" compare="sim_size"/>
       <output name="qcfcs" file="std/alldata.fcs" compare="sim_size"/>
     </test>
-    <test>
+    <test expect_num_outputs="2">
       <param name="input" value="input.fcs"/>
       <param name="remove" value="all"/>
       <param name="alphaFR" value="0.01"/>
@@ -89,10 +117,17 @@
       <param name="highQ_FCS" value="TRUE"/>
       <param name="lowQ_FCS" value="FALSE"/>
       <param name="QC_FCS" value="FALSE"/>
-      <output name="full_rep" file="nooutliers/QCreport_nooutliers.html" lines_diff="2"/>
+      <output name="full_rep">
+        <assert_contents>
+          <has_n_lines min="100" max="500"/>
+          <has_text text="data:image/png;base64"/>
+          <has_text text="Dynamic range check"/>
+          <has_size value="320433" delta="30000"/>
+        </assert_contents>
+      </output>
       <output name="highfcs" file="nooutliers/hqdata_nooutliers.fcs" compare="sim_size"/>
     </test>
-    <test>
+    <test expect_num_outputs="2">
       <param name="input" value="input.fcs"/>
       <param name="remove" value="all"/>
       <param name="alphaFR" value="0.01"/>
@@ -103,7 +138,15 @@
       <param name="highQ_FCS" value="TRUE"/>
       <param name="lowQ_FCS" value="FALSE"/>
       <param name="QC_FCS" value="FALSE"/>
-      <output name="full_rep" file="withsfsc/QCreport_sfsc.html" lines_diff="2"/>
+      <output name="full_rep">
+        <assert_contents>
+          <has_n_lines min="100" max="500"/>
+          <has_text text="data:image/png;base64"/>
+          <has_text text="Dynamic range check"/>
+          <has_text text="total_UNIQUE"/>
+          <has_size value="320220" delta="30000"/>
+        </assert_contents>
+      </output>
       <output name="highfcs" file="withsfsc/hqdata_sfsc.fcs" compare="sim_size"/>
     </test>
   </tests>
