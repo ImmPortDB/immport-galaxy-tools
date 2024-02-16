@@ -1,0 +1,27 @@
+<tool id="peacoqc_tool" name="PeacoQC Analysis" version="0.1.0">
+    <description>Flow data QC using PeacoQC</description>
+    <requirements>
+        <requirement type="package" version="1.0">r-base</requirement>
+        <requirement type="package" version="1.8.0">bioconductor-peacoqc</requirement>
+        <!-- Include other dependencies such as flowCore here -->
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        Rscript --vanilla $__tool_directory__/peacoqc_script.R '$input' '$output'
+    ]]></command>
+    <inputs>
+        <param name="input" type="data" format="fcs" label="Input FCS file" help="FCS file containing flow cytometry data for quality control."/>
+    </inputs>
+    <outputs>
+        <data name="output" format="rdata" label="${tool.name} on ${on_string}: QC Results"/>
+    </outputs>
+    <help><![CDATA[
+        **What this tool does**
+        This tool performs quality control on flow cytometry data using the PeacoQC package.
+        
+        **Inputs**
+        FCS files containing the flow cytometry data to be analyzed.
+        
+        **Outputs**
+        An R data file (.rdata) containing the results of the PeacoQC quality control analysis.
+    ]]></help>
+</tool>
